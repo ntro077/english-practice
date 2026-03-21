@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WordWise – 3000 English Words</title>
+<title>3 to 3000 – Master 3000 English Words</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -445,6 +445,27 @@
   @keyframes ripple { from { transform: scale(1); opacity: 0.4; } to { transform: scale(1.8); opacity: 0; } }
   @keyframes bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 70% { transform: translateY(-10px); } }
 
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 20px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .footer span {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   /* Responsive */
   @media (max-width: 480px) {
     .word-card, .pronunciation-section { padding: 20px; }
@@ -468,8 +489,8 @@
 
 <!-- HOME SCREEN -->
 <div id="home" class="screen active">
-  <div class="logo">WordWise</div>
-  <div class="tagline">Master 3,000 essential English words — 3 a day.</div>
+  <div class="logo">3 to 3000</div>
+  <div class="tagline">Master 3000 essential English words and kickstart your English language journey — 3 words a day.</div>
 
   <div class="stats-row">
     <div class="stat-card">
@@ -543,6 +564,10 @@
     <button class="btn btn-primary" id="continue-btn" onclick="goHome()">Continue Learning →</button>
   </div>
 </div>
+
+<footer class="footer">
+  Made with ❤️ by <span>EnglishTeacherRush</span>
+</footer>
 
 <script>
 // ===================== WORD LIST =====================
