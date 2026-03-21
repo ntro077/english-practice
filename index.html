@@ -575,38 +575,49 @@
   .lang-toggle {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 100px;
-    padding: 6px 8px;
+    padding: 8px 12px;
     margin-bottom: 20px;
     justify-content: center;
     flex-wrap: wrap;
   }
   .lang-toggle-label {
-    font-size: 12px;
-    color: var(--muted);
-    padding: 0 6px;
-    white-space: nowrap;
-  }
-  .lang-pill {
-    padding: 7px 16px;
-    border-radius: 100px;
-    border: none;
+    font-family: 'Playfair Display', serif;
     font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: transparent;
+    font-style: italic;
     color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
+    padding: 0 8px 0 4px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
   }
-  .lang-pill.active {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #0e0e14;
+  .lang-pill { padding: 8px 20px; border-radius: 100px; border: 2px solid transparent; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; background: transparent; font-family: 'Playfair Display', serif; letter-spacing: 0.5px; }
+  .lang-pill:hover:not(.active) { opacity: 0.8; transform: translateY(-1px); }
+  .lang-pill#lang-en, .lang-pill#plang-en { color: #60a5fa; border-color: #60a5fa; }
+  .lang-pill#lang-en.active, .lang-pill#plang-en.active { background: #60a5fa; color: #0e0e14; }
+  .lang-pill#lang-pt, .lang-pill#plang-pt { color: #4ade80; border-color: #4ade80; }
+  .lang-pill#lang-pt.active, .lang-pill#plang-pt.active { background: #4ade80; color: #0e0e14; }
+  .lang-pill#lang-es, .lang-pill#plang-es { color: #f87171; border-color: #f87171; }
+  .lang-pill#lang-es.active, .lang-pill#plang-es.active { background: #f87171; color: #0e0e14; }
+  .lang-pill img {
+    width: 22px;
+    height: 16px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 4px;
+    position: relative;
+    top: -1px;
   }
-  .lang-pill:hover:not(.active) { color: var(--text); }
+  .flag {
+    font-size: 18px;
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+    vertical-align: middle;
+    margin-right: 2px;
+    display: inline-block;
+  }
+  .lang-pill:hover:not(.active) { opacity: 0.85; }
 
   /* Translation styles */
   .translation-box {
@@ -681,10 +692,10 @@
   <button class="btn btn-primary" onclick="startPractice()">▶ Start Today's Practice</button>
 
   <div class="lang-toggle" style="margin-top:24px;max-width:420px;">
-    <span class="lang-toggle-label">🌍 Translation:</span>
-    <button class="lang-pill active" onclick="setLang('en', this)" id="lang-en">🇺🇸 English Only</button>
-    <button class="lang-pill" onclick="setLang('pt', this)" id="lang-pt">🇧🇷 + Portuguese</button>
-    <button class="lang-pill" onclick="setLang('es', this)" id="lang-es">🇪🇸 + Spanish</button>
+    <span class="lang-toggle-label">Translate:</span>
+    <button class="lang-pill active" onclick="setLang('en', this)" id="lang-en">English</button>
+    <button class="lang-pill" onclick="setLang('pt', this)" id="lang-pt">Português</button>
+    <button class="lang-pill" onclick="setLang('es', this)" id="lang-es">Español</button>
   </div>
 
 <!-- PRACTICE SCREEN -->
@@ -698,10 +709,10 @@
   <div class="words-nav" id="words-nav"></div>
 
   <div class="lang-toggle" id="practice-lang-toggle">
-    <span class="lang-toggle-label">🌍 Translation:</span>
-    <button class="lang-pill active" onclick="setLang('en', this)" id="plang-en">🇺🇸 English Only</button>
-    <button class="lang-pill" onclick="setLang('pt', this)" id="plang-pt">🇧🇷 + Portuguese</button>
-    <button class="lang-pill" onclick="setLang('es', this)" id="plang-es">🇪🇸 + Spanish</button>
+    <span class="lang-toggle-label">Translate:</span>
+    <button class="lang-pill active" onclick="setLang('en', this)" id="plang-en">English</button>
+    <button class="lang-pill" onclick="setLang('pt', this)" id="plang-pt">Português</button>
+    <button class="lang-pill" onclick="setLang('es', this)" id="plang-es">Español</button>
   </div>
 
   <div id="word-content"></div>
