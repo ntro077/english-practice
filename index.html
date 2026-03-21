@@ -874,7 +874,7 @@ function jumpToWord(i) {
   if (wordData[i]) {
     renderWord(wordData[i], todaysWords[i], i);
   } else {
-    await loadWordData(todaysWords, i);
+    loadWordData(todaysWords, i);
   }
 }
 
