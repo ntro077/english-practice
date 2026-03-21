@@ -888,21 +888,26 @@ function goHome() {
 
 // ===================== PRACTICE =====================
 function startPractice() {
-  // Check if test is needed
   if (state.needsTest) {
     startTest();
     return;
   }
   currentWordIndex = 0;
   wordData = [];
-  showScreen('practice');
   const dayIdx = state.currentDay - 1;
   const startWord = dayIdx * 3;
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
 
+  showScreen('practice');
   document.getElementById('practice-day-badge').textContent = 'Day ' + state.currentDay;
   buildWordNav(todaysWords.length);
-  loadWordData(todaysWords, 0);
+
+  // Load and render first word immediately
+  const data = fetchWordData(todaysWords[0]);
+  wordData[0] = data;
+  renderWord(data, todaysWords[0], 0);
+  updateWordNav(0);
+  updateNavButtons(0, todaysWords.length);
 }
 
 function buildWordNav(count) {
