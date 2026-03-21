@@ -908,6 +908,14 @@ function startPractice() {
   renderWord(data, todaysWords[0], 0);
   updateWordNav(0);
   updateNavButtons(0, todaysWords.length);
+
+  // Smooth scroll to word content after short delay
+  setTimeout(() => {
+    const wordContent = document.getElementById('word-content');
+    if (wordContent) {
+      wordContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 300);
 }
 
 function buildWordNav(count) {
