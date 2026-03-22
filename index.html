@@ -662,26 +662,26 @@
 <!-- HOME SCREEN -->
 <div id="home" class="screen active">
   <div class="logo">3 to 3000</div>
-  <div class="tagline">Master 3000 essential English words and kickstart your English language journey — 3 words a day.</div>
+  <div class="tagline" id="ui-tagline">Master 3000 essential English words and kickstart your English language journey — 3 words a day.</div>
 
   <div class="stats-row">
     <div class="stat-card">
       <div class="num">3,000</div>
-      <div class="label">Total Words</div>
+      <div class="label" id="ui-total-words">Total Words</div>
     </div>
     <div class="stat-card">
       <div class="num" id="home-day-num">1</div>
-      <div class="label">Current Day</div>
+      <div class="label" id="ui-current-day">Current Day</div>
     </div>
     <div class="stat-card">
       <div class="num" id="home-words-learned">0</div>
-      <div class="label">Words Learned</div>
+      <div class="label" id="ui-words-learned">Words Learned</div>
     </div>
   </div>
 
   <div class="progress-section">
     <div class="progress-label">
-      <span>Overall Progress</span>
+      <span id="ui-overall-progress">Overall Progress</span>
       <span id="home-pct">0%</span>
     </div>
     <div class="progress-bar-wrap">
@@ -689,10 +689,10 @@
     </div>
   </div>
 
-  <button class="btn btn-primary" onclick="startPractice()">▶ Start Today's Practice</button>
+  <button class="btn btn-primary" onclick="startPractice()" id="ui-start-btn">▶ Start Today's Practice</button>
 
   <div class="lang-toggle" style="margin-top:24px;max-width:420px;">
-    <span class="lang-toggle-label">Translate:</span>
+    <span class="lang-toggle-label" id="ui-translate-label">Translate:</span>
     <button class="lang-pill active" onclick="setLang('en', this)" id="lang-en">English</button>
     <button class="lang-pill" onclick="setLang('pt', this)" id="lang-pt">Português</button>
     <button class="lang-pill" onclick="setLang('es', this)" id="lang-es">Español</button>
@@ -718,9 +718,9 @@
   <div id="word-content"></div>
 
   <div style="display:flex;gap:12px;justify-content:center;margin-top:8px;">
-    <button class="btn btn-secondary" id="prev-btn" onclick="prevWord()" style="display:none">← Prev</button>
-    <button class="btn btn-primary" id="next-btn" onclick="nextWord()">Next Word →</button>
-    <button class="btn btn-primary complete-day-btn" id="complete-day-btn" onclick="completeDay()" style="display:none">✓ Complete Day</button>
+    <button class="btn btn-secondary" id="prev-btn" onclick="prevWord()" style="display:none">← <span id="ui-prev">Prev</span></button>
+    <button class="btn btn-primary" id="next-btn" onclick="nextWord()"><span id="ui-next">Next Word</span> →</button>
+    <button class="btn btn-primary complete-day-btn" id="complete-day-btn" onclick="completeDay()" style="display:none">✓ <span id="ui-complete">Complete Day</span></button>
   </div>
 </div>
 
@@ -743,53 +743,53 @@
   <div style="max-width:480px;margin:0 auto;padding:40px 20px;text-align:center;">
 
     <div class="share-emoji">🎉</div>
-    <div class="share-title">Day <span id="share-day-num">1</span> Complete!</div>
-    <div class="share-subtitle">Amazing work! Share your progress and inspire others to start their English journey too. 🌟</div>
+    <div class="share-title">Day <span id="share-day-num">1</span> <span id="ui-complete-title">Complete!</span></div>
+    <div class="share-subtitle" id="ui-share-subtitle">Amazing work! Share your progress and inspire others to start their English journey too. 🌟</div>
 
     <!-- Visual progress card for screenshot -->
     <div class="progress-card-visual" id="progress-card-visual">
       <div class="pcv-brand">3 to 3000</div>
-      <div class="pcv-tagline">englishteacherrush.com · 3 words a day</div>
+      <div class="pcv-tagline">EnglishTeacherRush · 3 words a day</div>
       <div class="pcv-stats">
         <div class="pcv-stat">
           <div class="pcv-stat-num" id="share-stat-day">1</div>
-          <div class="pcv-stat-label">Day</div>
+          <div class="pcv-stat-label" id="ui-day-label">Day</div>
         </div>
         <div class="pcv-stat">
           <div class="pcv-stat-num" id="share-stat-words">3</div>
-          <div class="pcv-stat-label">Words Learned</div>
+          <div class="pcv-stat-label" id="ui-words-label">Words Learned</div>
         </div>
         <div class="pcv-stat">
           <div class="pcv-stat-num" id="share-stat-pct">0%</div>
-          <div class="pcv-stat-label">Complete</div>
+          <div class="pcv-stat-label" id="ui-complete-label">Complete</div>
         </div>
       </div>
       <div class="pcv-words" id="share-today-words"></div>
       <div class="pcv-url">🔗 ntro077.github.io/english-practice</div>
     </div>
 
-    <div style="font-size:13px;color:var(--muted);margin:16px 0 32px;">
+    <div style="font-size:13px;color:var(--muted);margin:16px 0 32px;" id="ui-screenshot-hint">
       📸 Screenshot the card above to share on Instagram or TikTok!
     </div>
 
     <!-- Scroll hint -->
-    <div style="color:var(--muted);font-size:13px;margin-bottom:12px;animation:fadeUp 1s 0.5s ease both;opacity:0;">
+    <div style="color:var(--muted);font-size:13px;margin-bottom:12px;" id="ui-scroll-hint">
       ↓ Scroll down to share your progress
     </div>
     <div style="font-size:24px;animation:bounce 2s infinite;color:var(--accent);">↓</div>
 
     <!-- Share buttons at the natural bottom of the page -->
     <div style="margin-top:60px;padding-top:32px;border-top:1px solid var(--border);">
-      <div style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;">Share your progress 🚀</div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;" id="ui-share-title">Share your progress 🚀</div>
       <div style="display:flex;gap:10px;margin-bottom:10px;">
-        <button class="share-btn share-btn-copy" style="flex:1;font-size:13px;padding:13px 8px;" onclick="copyShareText()">📋 Copy Caption</button>
-        <a class="share-btn share-btn-wa" style="flex:1;font-size:13px;padding:13px 8px;" href="#" target="_blank" onclick="openWhatsApp()">💬 WhatsApp</a>
+        <button class="share-btn share-btn-copy" style="flex:1;font-size:13px;padding:13px 8px;" onclick="copyShareText()" id="ui-copy-btn">📋 Copy Caption</button>
+        <a class="share-btn share-btn-wa" style="flex:1;font-size:13px;padding:13px 8px;" href="#" target="_blank" onclick="openWhatsApp()" id="ui-wa-btn">💬 WhatsApp</a>
       </div>
       <div style="display:flex;gap:10px;margin-bottom:10px;">
-        <button class="share-btn share-btn-ig" style="flex:1;font-size:13px;padding:13px 8px;" onclick="shareInstagram()">📸 Instagram</button>
-        <button class="share-btn share-btn-tt" style="flex:1;font-size:13px;padding:13px 8px;" onclick="shareTikTok()">🎵 TikTok</button>
+        <button class="share-btn share-btn-ig" style="flex:1;font-size:13px;padding:13px 8px;" onclick="shareInstagram()" id="ui-ig-btn">📸 Instagram</button>
+        <button class="share-btn share-btn-tt" style="flex:1;font-size:13px;padding:13px 8px;" onclick="shareTikTok()" id="ui-tt-btn">🎵 TikTok</button>
       </div>
-      <button class="share-btn share-btn-skip" style="width:100%;font-size:13px;margin-top:4px;" onclick="afterShare()">Skip → Continue to next day</button>
+      <button class="share-btn share-btn-skip" style="width:100%;font-size:13px;margin-top:4px;" onclick="afterShare()" id="ui-skip-btn">Skip → Continue to next day</button>
     </div>
 
   </div>
@@ -863,16 +863,103 @@ let testAnswers = [];
 let testCurrentQ = 0;
 let currentLang = 'en'; // 'en', 'pt', 'es'
 
+// ===================== UI TRANSLATIONS =====================
+const UI_TEXT = {
+  en: {
+    tagline: "Master 3000 essential English words and kickstart your English language journey — 3 words a day.",
+    totalWords: "Total Words", currentDay: "Current Day", wordsLearned: "Words Learned",
+    overallProgress: "Overall Progress", startBtn: "▶ Start Today's Practice",
+    translateLabel: "Translate:", prev: "Prev", next: "Next Word", complete: "Complete Day",
+    completeTitle: "Complete!", shareSubtitle: "Amazing work! Share your progress and inspire others to start their English journey too. 🌟",
+    dayLabel: "Day", wordsLabel: "Words Learned", completeLabel: "Complete",
+    screenshotHint: "📸 Screenshot the card above to share on Instagram or TikTok!",
+    scrollHint: "↓ Scroll down to share your progress",
+    shareTitle: "Share your progress 🚀", copyBtn: "📋 Copy Caption",
+    skipBtn: "Skip → Continue to next day",
+    synonymsLabel: "Synonyms", sentencesLabel: "Example Sentences",
+    phrasesLabel: "Common Phrases", pronTitle: "🎤 Pronunciation Practice",
+    hearWord: "🔊 Hear the word", micHint: "Tap to practice your pronunciation",
+    micFeedback: "Press the mic and say the word aloud", practiceLabel: "Practice these sentences aloud",
+  },
+  pt: {
+    tagline: "Domine 3000 palavras essenciais em inglês e comece sua jornada — 3 palavras por dia.",
+    totalWords: "Total de Palavras", currentDay: "Dia Atual", wordsLearned: "Palavras Aprendidas",
+    overallProgress: "Progresso Geral", startBtn: "▶ Começar a Prática de Hoje",
+    translateLabel: "Traduzir:", prev: "Anterior", next: "Próxima Palavra", complete: "Completar Dia",
+    completeTitle: "Completo!", shareSubtitle: "Incrível! Compartilhe seu progresso e inspire outros a começar sua jornada em inglês. 🌟",
+    dayLabel: "Dia", wordsLabel: "Palavras Aprendidas", completeLabel: "Completo",
+    screenshotHint: "📸 Tire um print do cartão acima para compartilhar no Instagram ou TikTok!",
+    scrollHint: "↓ Role para baixo para compartilhar seu progresso",
+    shareTitle: "Compartilhe seu progresso 🚀", copyBtn: "📋 Copiar Legenda",
+    skipBtn: "Pular → Continuar para o próximo dia",
+    synonymsLabel: "Sinônimos", sentencesLabel: "Frases de Exemplo",
+    phrasesLabel: "Expressões Comuns", pronTitle: "🎤 Prática de Pronúncia",
+    hearWord: "🔊 Ouvir a palavra", micHint: "Toque para praticar sua pronúncia",
+    micFeedback: "Pressione o microfone e diga a palavra em voz alta", practiceLabel: "Pratique estas frases em voz alta",
+  },
+  es: {
+    tagline: "Domina 3000 palabras esenciales en inglés y comienza tu viaje — 3 palabras por día.",
+    totalWords: "Total de Palabras", currentDay: "Día Actual", wordsLearned: "Palabras Aprendidas",
+    overallProgress: "Progreso General", startBtn: "▶ Comenzar la Práctica de Hoy",
+    translateLabel: "Traducir:", prev: "Anterior", next: "Siguiente Palabra", complete: "Completar Día",
+    completeTitle: "¡Completo!", shareSubtitle: "¡Increíble! Comparte tu progreso e inspira a otros a comenzar su viaje en inglés. 🌟",
+    dayLabel: "Día", wordsLabel: "Palabras Aprendidas", completeLabel: "Completo",
+    screenshotHint: "📸 Captura la tarjeta de arriba para compartir en Instagram o TikTok!",
+    scrollHint: "↓ Desplázate hacia abajo para compartir tu progreso",
+    shareTitle: "Comparte tu progreso 🚀", copyBtn: "📋 Copiar Leyenda",
+    skipBtn: "Omitir → Continuar al siguiente día",
+    synonymsLabel: "Sinónimos", sentencesLabel: "Oraciones de Ejemplo",
+    phrasesLabel: "Frases Comunes", pronTitle: "🎤 Práctica de Pronunciación",
+    hearWord: "🔊 Escuchar la palabra", micHint: "Toca para practicar tu pronunciación",
+    micFeedback: "Presiona el micrófono y di la palabra en voz alta", practiceLabel: "Practica estas oraciones en voz alta",
+  }
+};
+
+function applyUITranslation(lang) {
+  const t = UI_TEXT[lang];
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  const setHTML = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
+
+  set('ui-tagline', t.tagline);
+  set('ui-total-words', t.totalWords);
+  set('ui-current-day', t.currentDay);
+  set('ui-words-learned', t.wordsLearned);
+  set('ui-overall-progress', t.overallProgress);
+  set('ui-start-btn', t.startBtn);
+  set('ui-translate-label', t.translateLabel);
+  set('ui-prev', t.prev);
+  set('ui-next', t.next);
+  set('ui-complete', t.complete);
+  set('ui-complete-title', t.completeTitle);
+  set('ui-share-subtitle', t.shareSubtitle);
+  set('ui-day-label', t.dayLabel);
+  set('ui-words-label', t.wordsLabel);
+  set('ui-complete-label', t.completeLabel);
+  set('ui-screenshot-hint', t.screenshotHint);
+  set('ui-scroll-hint', t.scrollHint);
+  set('ui-share-title', t.shareTitle);
+  set('ui-copy-btn', t.copyBtn);
+  set('ui-skip-btn', t.skipBtn);
+
+  // Update pronunciation section if visible
+  const pronTitle = document.querySelector('.pronunciation-title');
+  if (pronTitle) pronTitle.textContent = t.pronTitle;
+  const micFeedback = document.getElementById('pron-feedback');
+  if (micFeedback && micFeedback.textContent === UI_TEXT['en'].micFeedback || micFeedback?.textContent === UI_TEXT['pt'].micFeedback || micFeedback?.textContent === UI_TEXT['es'].micFeedback) {
+    micFeedback.textContent = t.micFeedback;
+  }
+}
+
 // ===================== LANGUAGE =====================
 function setLang(lang, btn) {
   currentLang = lang;
-  // Sync both toggles (home + practice)
   ['en','pt','es'].forEach(l => {
     const h = document.getElementById('lang-' + l);
     const p = document.getElementById('plang-' + l);
     if (h) h.classList.toggle('active', l === lang);
     if (p) p.classList.toggle('active', l === lang);
   });
+  applyUITranslation(lang);
   // Re-render current word if on practice screen
   const dayIdx = state.currentDay - 1;
   const startWord = dayIdx * 3;
@@ -1013,6 +1100,7 @@ function renderWord(data, word, idx) {
   const langLabel = showPt ? '🇧🇷 Português' : '🇪🇸 Español';
   const wordTranslation = showPt ? data.word_pt : data.word_es;
   const sentenceTranslations = showPt ? (data.sentences_pt || []) : (data.sentences_es || []);
+  const t = UI_TEXT[currentLang];
 
   const html = `
     <div class="word-card">
@@ -1021,12 +1109,12 @@ function renderWord(data, word, idx) {
       ${showTranslation && wordTranslation ? `<div class="word-translation">${wordTranslation}</div>` : ''}
       <span class="word-pos">${data.pos || 'word'}</span>
 
-      <div class="section-label">Synonyms</div>
+      <div class="section-label">${t.synonymsLabel}</div>
       <div class="synonyms-list">
         ${(data.synonyms || []).map(s => `<span class="synonym-tag">${s}</span>`).join('')}
       </div>
 
-      <div class="section-label">Example Sentences</div>
+      <div class="section-label">${t.sentencesLabel}</div>
       ${(data.sentences || []).map((s, i) => `
         <div class="example-sentence">${s}</div>
         ${showTranslation && sentenceTranslations[i] ? `
@@ -1036,7 +1124,7 @@ function renderWord(data, word, idx) {
           </div>` : ''}
       `).join('')}
 
-      <div class="section-label">Common Phrases</div>
+      <div class="section-label">${t.phrasesLabel}</div>
       ${(data.phrases || []).map(p => `
         <div class="phrase-row">
           <div class="phrase-text">${p}</div>
@@ -1045,17 +1133,17 @@ function renderWord(data, word, idx) {
     </div>
 
     <div class="pronunciation-section">
-      <div class="pronunciation-title">🎤 Pronunciation Practice</div>
+      <div class="pronunciation-title">${t.pronTitle}</div>
       <div style="margin-bottom:16px">
-        <button class="listen-btn" onclick="speakText('${word}', 0.7)">🔊 Hear the word</button>
+        <button class="listen-btn" onclick="speakText('${word}', 0.7)">${t.hearWord}</button>
       </div>
       <div class="mic-container">
         <button class="mic-btn" id="mic-btn" onclick="toggleMic('${word}')">🎙</button>
-        <div style="font-size:13px;color:var(--muted)">Tap to practice your pronunciation</div>
-        <div class="pronunciation-feedback" id="pron-feedback">Press the mic and say the word aloud</div>
+        <div style="font-size:13px;color:var(--muted)">${t.micHint}</div>
+        <div class="pronunciation-feedback" id="pron-feedback">${t.micFeedback}</div>
       </div>
       <div style="margin-top:16px">
-        <div class="section-label">Practice these sentences aloud</div>
+        <div class="section-label">${t.practiceLabel}</div>
         ${(data.sentences || []).slice(0,2).map((s,i) => `
           <div class="phrase-row">
             <div class="phrase-text" style="font-size:13px">${s.replace(/<\/?strong>/g,'')}</div>
