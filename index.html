@@ -677,6 +677,11 @@
     margin-top: 4px;
     margin-bottom: 12px;
   }
+  
+  /* Scroll to element helper class */
+  .scroll-target {
+    scroll-margin-top: 80px;
+  }
 </style>
 </head>
 <body>
@@ -745,7 +750,7 @@
     <button class="lang-pill" onclick="setLang('es', this)" id="lang-es">Español</button>
   </div>
 
-  <div id="word-content"></div>
+  <div id="word-content" class="scroll-target"></div>
 
   <div style="display:flex;gap:12px;justify-content:center;margin-top:8px;">
     <button class="btn btn-secondary" id="prev-btn" onclick="prevWord()" style="display:none">← <span id="ui-prev">Prev</span></button>
@@ -928,6 +933,16 @@ function buildCalendar() {
   }
 }
 
+function scrollToWords() {
+  setTimeout(function() {
+    const wordContent = document.getElementById('word-content');
+    if (wordContent) {
+      wordContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      console.log("Scrolled to words");
+    }
+  }, 300);
+}
+
 function reviewDayWords(day) {
   console.log("Reviewing day:", day);
   reviewMode = true;
@@ -949,6 +964,9 @@ function reviewDayWords(day) {
   renderWord(data, todaysWords[0], 0);
   updateWordNav(0);
   updateNavButtons(0, todaysWords.length);
+  
+  // Auto scroll to words
+  scrollToWords();
 }
 
 // ===================== UI TRANSLATIONS =====================
@@ -1104,6 +1122,9 @@ function startPractice() {
   renderWord(data, todaysWords[0], 0);
   updateWordNav(0);
   updateNavButtons(0, todaysWords.length);
+  
+  // Auto scroll to words
+  scrollToWords();
 }
 
 function buildWordNav(count) {
@@ -1140,6 +1161,8 @@ function jumpToWord(i) {
   } else {
     loadWordData(todaysWords, i);
   }
+  // Scroll to words when jumping
+  scrollToWords();
 }
 
 function updateNavButtons(idx, total) {
@@ -1266,6 +1289,7 @@ function nextWord() {
     } else {
       loadWordData(todaysWords, currentWordIndex);
     }
+    scrollToWords();
   }
 }
 
@@ -1282,6 +1306,7 @@ function prevWord() {
     } else {
       loadWordData(todaysWords, currentWordIndex);
     }
+    scrollToWords();
   }
 }
 
