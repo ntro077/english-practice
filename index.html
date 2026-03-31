@@ -93,7 +93,6 @@
     padding: 0 10px;
     letter-spacing: -0.02em;
   }
-  /* Fix for Firefox */
   @supports (background-clip: text) {
     #home .logo {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -176,7 +175,6 @@
   .btn-primary {
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     color: #0e0e14;
-    animation: fadeUp 0.8s 0.45s ease both;
   }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(245,200,66,0.3); }
   .btn-secondary {
@@ -274,7 +272,6 @@
   }
   .example-sentence strong { color: var(--accent); font-style: normal; }
 
-  /* Pronunciation */
   .pronunciation-section {
     background: var(--surface2);
     border-radius: 20px;
@@ -393,13 +390,14 @@
   .word-nav-dot.active { border-color: var(--accent); color: var(--accent); background: rgba(245,200,66,0.1); }
   .word-nav-dot.done { border-color: var(--green); background: rgba(74,222,128,0.1); color: var(--green); }
 
-  /* Calendar/History View */
   .calendar-section {
     margin-top: 32px;
     padding: 20px;
     background: var(--surface);
     border-radius: var(--radius);
     border: 1px solid var(--border);
+    width: 100%;
+    max-width: 600px;
   }
   .calendar-title {
     font-family: 'Playfair Display', serif;
@@ -414,7 +412,7 @@
   }
   .days-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 12px;
     margin-top: 16px;
     max-height: 400px;
@@ -480,7 +478,6 @@
     margin: 0 auto 16px;
   }
 
-  /* ===== TEST SCREEN ===== */
   #test { min-height: 100vh; padding: 24px 20px 60px; max-width: 600px; margin: 0 auto; }
   .test-header { margin-bottom: 32px; text-align: center; }
   .test-title {
@@ -531,14 +528,12 @@
     transition: width 0.3s;
   }
 
-  /* ===== RESULT SCREEN ===== */
   #result { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center; }
   .result-emoji { font-size: 80px; margin-bottom: 16px; animation: bounce 0.6s ease; }
   .result-title { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; margin-bottom: 8px; }
   .result-score { font-size: 20px; color: var(--muted); margin-bottom: 40px; }
   .result-score span { color: var(--accent); font-weight: 700; font-size: 28px; }
 
-  /* ===== SHARE SCREEN ===== */
   #share { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center; }
 
   .share-card {
@@ -621,7 +616,7 @@
   @media (max-width: 480px) {
     .word-card, .pronunciation-section { padding: 20px; }
     .practice-header { flex-direction: column; align-items: flex-start; }
-    .days-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
+    .days-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
     .day-words { font-size: 9px; white-space: normal; line-height: 1.2; }
   }
 
@@ -888,6 +883,9 @@ function loadState() {
     if (s) state = JSON.parse(s);
   } catch { }
   if (!state.currentDay) state = { currentDay: 1, wordsCompleted: 0, testsPassed: [], needsTest: false, testDay: null };
+  if (!state.wordsCompleted) state.wordsCompleted = 0;
+  if (!state.testsPassed) state.testsPassed = [];
+  saveState();
 }
 
 function saveState() {
@@ -895,7 +893,7 @@ function saveState() {
 }
 
 function buildCalendar() {
-  const maxDay = Math.min(Math.floor(ALL_WORDS.length / 3), state.currentDay + 5);
+  const maxDay = Math.min(Math.floor(ALL_WORDS.length / 3), state.currentDay + 10);
   const completedDays = Math.floor(state.wordsCompleted / 3);
   const grid = document.getElementById('calendar-grid');
   if (!grid) return;
@@ -918,13 +916,20 @@ function buildCalendar() {
     `;
     
     if (isCompleted) {
-      dayCard.onclick = () => reviewDayWords(day);
+      dayCard.onclick = (function(d) { 
+        return function() { reviewDayWords(d); };
+      })(day);
+      dayCard.style.cursor = 'pointer';
+    } else {
+      dayCard.style.cursor = 'not-allowed';
+      dayCard.style.opacity = '0.6';
     }
     grid.appendChild(dayCard);
   }
 }
 
 function reviewDayWords(day) {
+  console.log("Reviewing day:", day);
   reviewMode = true;
   reviewDay = day;
   currentWordIndex = 0;
@@ -934,7 +939,7 @@ function reviewDayWords(day) {
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
   
   showScreen('practice');
-  document.getElementById('practice-day-badge').innerHTML = `📖 Day ${day} (Review) <span style="font-size:10px;background:var(--accent2);padding:2px 8px;border-radius:20px;">Review Mode</span>`;
+  document.getElementById('practice-day-badge').innerHTML = `📖 Day ${day} (Review) <span style="font-size:10px;background:var(--accent2);padding:2px 8px;border-radius:20px;margin-left:8px;">Review Mode</span>`;
   document.getElementById('complete-day-btn').style.display = 'none';
   
   buildWordNav(todaysWords.length);
@@ -946,6 +951,7 @@ function reviewDayWords(day) {
   updateNavButtons(0, todaysWords.length);
 }
 
+// ===================== UI TRANSLATIONS =====================
 const UI_TEXT = {
   en: {
     tagline: "Master 3000 essential English words and kickstart your English language journey — 3 words a day.",
@@ -1036,7 +1042,9 @@ function setLang(lang, btn) {
     const dayIdx = reviewMode ? reviewDay - 1 : state.currentDay - 1;
     const startWord = dayIdx * 3;
     const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
-    renderWord(wordData[currentWordIndex], todaysWords[currentWordIndex], currentWordIndex);
+    if (todaysWords[currentWordIndex]) {
+      renderWord(wordData[currentWordIndex], todaysWords[currentWordIndex], currentWordIndex);
+    }
   }
 }
 
@@ -1058,24 +1066,39 @@ function goHome() {
 }
 
 function startPractice() {
-  if (state.needsTest) {
+  console.log("Start practice called");
+  
+  // Check if there's a pending test first
+  if (state.needsTest && state.testDay) {
     startTest();
     return;
   }
+  
+  // Reset review mode
   reviewMode = false;
   reviewDay = null;
   currentWordIndex = 0;
   wordData = [];
+  
+  // Get today's words
   const dayIdx = state.currentDay - 1;
   const startWord = dayIdx * 3;
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
-
+  
+  console.log("Today's words:", todaysWords);
+  console.log("Current day:", state.currentDay);
+  
+  // Show practice screen
   showScreen('practice');
+  
+  // Update the day badge
   document.getElementById('practice-day-badge').innerHTML = `Day ${state.currentDay}`;
   document.getElementById('complete-day-btn').style.display = 'none';
   
+  // Build navigation dots
   buildWordNav(todaysWords.length);
   
+  // Load and render first word
   const data = fetchWordData(todaysWords[0]);
   wordData[0] = data;
   renderWord(data, todaysWords[0], 0);
@@ -1090,7 +1113,7 @@ function buildWordNav(count) {
     const btn = document.createElement('button');
     btn.className = 'word-nav-dot' + (i === 0 ? ' active' : '');
     btn.textContent = i + 1;
-    btn.onclick = () => jumpToWord(i);
+    btn.onclick = (function(idx) { return function() { jumpToWord(idx); }; })(i);
     btn.id = 'nav-dot-' + i;
     nav.appendChild(btn);
   }
@@ -1124,6 +1147,8 @@ function updateNavButtons(idx, total) {
   document.getElementById('next-btn').style.display = idx < total - 1 ? 'inline-flex' : 'none';
   if (!reviewMode && idx === total - 1 && wordData[idx]) {
     document.getElementById('complete-day-btn').style.display = 'inline-flex';
+  } else if (reviewMode) {
+    document.getElementById('complete-day-btn').style.display = 'none';
   }
 }
 
@@ -1232,13 +1257,15 @@ function nextWord() {
   const dayIdx = reviewMode ? reviewDay - 1 : state.currentDay - 1;
   const startWord = dayIdx * 3;
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
-  currentWordIndex++;
-  updateWordNav(currentWordIndex);
-  updateNavButtons(currentWordIndex, todaysWords.length);
-  if (wordData[currentWordIndex]) {
-    renderWord(wordData[currentWordIndex], todaysWords[currentWordIndex], currentWordIndex);
-  } else {
-    loadWordData(todaysWords, currentWordIndex);
+  if (currentWordIndex < todaysWords.length - 1) {
+    currentWordIndex++;
+    updateWordNav(currentWordIndex);
+    updateNavButtons(currentWordIndex, todaysWords.length);
+    if (wordData[currentWordIndex]) {
+      renderWord(wordData[currentWordIndex], todaysWords[currentWordIndex], currentWordIndex);
+    } else {
+      loadWordData(todaysWords, currentWordIndex);
+    }
   }
 }
 
@@ -1246,13 +1273,15 @@ function prevWord() {
   const dayIdx = reviewMode ? reviewDay - 1 : state.currentDay - 1;
   const startWord = dayIdx * 3;
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
-  currentWordIndex--;
-  updateWordNav(currentWordIndex);
-  updateNavButtons(currentWordIndex, todaysWords.length);
-  if (wordData[currentWordIndex]) {
-    renderWord(wordData[currentWordIndex], todaysWords[currentWordIndex], currentWordIndex);
-  } else {
-    loadWordData(todaysWords, currentWordIndex);
+  if (currentWordIndex > 0) {
+    currentWordIndex--;
+    updateWordNav(currentWordIndex);
+    updateNavButtons(currentWordIndex, todaysWords.length);
+    if (wordData[currentWordIndex]) {
+      renderWord(wordData[currentWordIndex], todaysWords[currentWordIndex], currentWordIndex);
+    } else {
+      loadWordData(todaysWords, currentWordIndex);
+    }
   }
 }
 
@@ -1515,6 +1544,7 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
+// ===================== INIT =====================
 loadState();
 updateHome();
 applyUITranslation('en');
