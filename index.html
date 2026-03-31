@@ -24,30 +24,6 @@
 <meta name="twitter:description" content="Master the 3000 most essential English words — 3 words a day. Free app with pronunciation, Portuguese & Spanish translations.">
 <meta name="twitter:site" content="@EnglishTeacherRush">
 
-<!-- Schema.org structured data for Google -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "3 to 3000 – Learn English Vocabulary",
-  "description": "Free English vocabulary learning app. Master the 3000 most common English words with 3 words per day, pronunciation practice, synonyms, example sentences, and translations in Portuguese and Spanish.",
-  "url": "https://ntro077.github.io/english-practice/",
-  "applicationCategory": "EducationApplication",
-  "operatingSystem": "Any",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Person",
-    "name": "EnglishTeacherRush",
-    "url": "https://ntro077.github.io/my-teaching-site/"
-  },
-  "inLanguage": ["en", "pt", "es"],
-  "keywords": "learn english, english vocabulary, 3000 english words, english practice, pronunciation"
-}
-</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -71,7 +47,6 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
-  /* Ambient background */
   body::before {
     content: '';
     position: fixed;
@@ -91,7 +66,6 @@
     z-index: 0;
   }
 
-  /* SCREENS */
   .screen { display: none; position: relative; z-index: 1; }
   .screen.active { display: block; }
 
@@ -102,26 +76,39 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
+    padding: 60px 20px;
     text-align: center;
   }
   #home .logo {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(48px, 10vw, 96px);
+    font-size: clamp(48px, 12vw, 110px);
     font-weight: 900;
-    line-height: 1;
+    line-height: 1.2;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     animation: fadeUp 0.8s ease both;
+    padding: 0 10px;
+    letter-spacing: -0.02em;
+  }
+  /* Fix for Firefox */
+  @supports (background-clip: text) {
+    #home .logo {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
   }
   #home .tagline {
     font-size: 18px;
     color: var(--muted);
     margin-bottom: 48px;
     animation: fadeUp 0.8s 0.15s ease both;
+    max-width: 600px;
+    line-height: 1.5;
   }
   .stats-row {
     display: flex;
@@ -212,6 +199,8 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
   .day-badge {
     background: var(--surface);
@@ -239,7 +228,7 @@
     font-weight: 900;
     color: var(--accent);
     margin-bottom: 8px;
-    line-height: 1;
+    line-height: 1.2;
   }
   .word-pos {
     display: inline-block;
@@ -359,7 +348,6 @@
   .pronunciation-feedback.good { color: var(--green); }
   .pronunciation-feedback.try-again { color: var(--accent2); }
 
-  /* Phrase practice */
   .phrase-row {
     display: flex;
     align-items: center;
@@ -404,6 +392,75 @@
   }
   .word-nav-dot.active { border-color: var(--accent); color: var(--accent); background: rgba(245,200,66,0.1); }
   .word-nav-dot.done { border-color: var(--green); background: rgba(74,222,128,0.1); color: var(--green); }
+
+  /* Calendar/History View */
+  .calendar-section {
+    margin-top: 32px;
+    padding: 20px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .calendar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+  }
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 8px;
+  }
+  .day-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .day-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .day-card.completed {
+    background: linear-gradient(135deg, rgba(74,222,128,0.1), rgba(245,200,66,0.1));
+    border-color: var(--green);
+  }
+  .day-card.current {
+    border-color: var(--accent);
+    background: rgba(245,200,66,0.1);
+  }
+  .day-number {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .day-words {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .day-status {
+    font-size: 10px;
+    margin-top: 4px;
+  }
+  .day-status.completed { color: var(--green); }
+  .day-status.locked { color: var(--red); }
 
   .loading-card {
     background: var(--surface);
@@ -497,7 +554,6 @@
   .share-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; margin-bottom: 8px; }
   .share-subtitle { color: var(--muted); font-size: 15px; margin-bottom: 28px; line-height: 1.6; }
 
-  /* Progress card for screenshot */
   .progress-card-visual {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     border-radius: 20px;
@@ -542,7 +598,6 @@
   @keyframes ripple { from { transform: scale(1); opacity: 0.4; } to { transform: scale(1.8); opacity: 0; } }
   @keyframes bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 70% { transform: translateY(-10px); } }
 
-  /* Footer */
   .footer {
     text-align: center;
     padding: 32px 20px;
@@ -563,15 +618,15 @@
     background-clip: text;
   }
 
-  /* Responsive */
   @media (max-width: 480px) {
     .word-card, .pronunciation-section { padding: 20px; }
-    .practice-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .practice-header { flex-direction: column; align-items: flex-start; }
+    .days-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
+    .day-words { font-size: 9px; white-space: normal; line-height: 1.2; }
   }
 
   .complete-day-btn { margin-top: 16px; width: 100%; justify-content: center; }
 
-  /* Language toggle */
   .lang-toggle {
     display: flex;
     align-items: center;
@@ -601,25 +656,7 @@
   .lang-pill#lang-pt.active, .lang-pill#plang-pt.active { background: #4ade80; color: #0e0e14; }
   .lang-pill#lang-es, .lang-pill#plang-es { color: #f87171; border-color: #f87171; }
   .lang-pill#lang-es.active, .lang-pill#plang-es.active { background: #f87171; color: #0e0e14; }
-  .lang-pill img {
-    width: 22px;
-    height: 16px;
-    border-radius: 3px;
-    vertical-align: middle;
-    margin-right: 4px;
-    position: relative;
-    top: -1px;
-  }
-  .flag {
-    font-size: 18px;
-    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
-    vertical-align: middle;
-    margin-right: 2px;
-    display: inline-block;
-  }
-  .lang-pill:hover:not(.active) { opacity: 0.85; }
 
-  /* Translation styles */
   .translation-box {
     background: rgba(74,222,128,0.06);
     border: 1px solid rgba(74,222,128,0.2);
@@ -644,16 +681,6 @@
     color: var(--green);
     margin-top: 4px;
     margin-bottom: 12px;
-  }
-  .alert-banner {
-    background: rgba(245,200,66,0.1);
-    border: 1px solid rgba(245,200,66,0.3);
-    border-radius: 12px;
-    padding: 14px 18px;
-    font-size: 14px;
-    color: var(--accent);
-    margin-bottom: 20px;
-    text-align: center;
   }
 </style>
 </head>
@@ -691,12 +718,20 @@
 
   <button class="btn btn-primary" onclick="startPractice()" id="ui-start-btn">▶ Start Today's Practice</button>
 
+  <div class="calendar-section">
+    <div class="calendar-title">
+      📅 <span id="ui-review-title">Review Past Days</span>
+    </div>
+    <div id="calendar-grid" class="days-grid"></div>
+  </div>
+
   <div class="lang-toggle" style="margin-top:24px;max-width:420px;">
     <span class="lang-toggle-label" id="ui-translate-label">Translate:</span>
     <button class="lang-pill active" onclick="setLang('en', this)" id="lang-en">English</button>
     <button class="lang-pill" onclick="setLang('pt', this)" id="lang-pt">Português</button>
     <button class="lang-pill" onclick="setLang('es', this)" id="lang-es">Español</button>
   </div>
+</div>
 
 <!-- PRACTICE SCREEN -->
 <div id="practice" class="screen">
@@ -711,8 +746,8 @@
   <div class="lang-toggle" id="practice-lang-toggle">
     <span class="lang-toggle-label">Translate:</span>
     <button class="lang-pill active" onclick="setLang('en', this)" id="plang-en">English</button>
-    <button class="lang-pill" onclick="setLang('pt', this)" id="plang-pt">Português</button>
-    <button class="lang-pill" onclick="setLang('es', this)" id="plang-es">Español</button>
+    <button class="lang-pill" onclick="setLang('pt', this)" id="lang-pt">Português</button>
+    <button class="lang-pill" onclick="setLang('es', this)" id="lang-es">Español</button>
   </div>
 
   <div id="word-content"></div>
@@ -741,12 +776,10 @@
 <!-- SHARE SCREEN -->
 <div id="share" class="screen">
   <div style="max-width:480px;margin:0 auto;padding:40px 20px;text-align:center;">
-
     <div class="share-emoji">🎉</div>
     <div class="share-title">Day <span id="share-day-num">1</span> <span id="ui-complete-title">Complete!</span></div>
     <div class="share-subtitle" id="ui-share-subtitle">Amazing work! Share your progress and inspire others to start their English journey too. 🌟</div>
 
-    <!-- Visual progress card for screenshot -->
     <div class="progress-card-visual" id="progress-card-visual">
       <div class="pcv-brand">3 to 3000</div>
       <div class="pcv-tagline">EnglishTeacherRush · 3 words a day</div>
@@ -772,13 +805,11 @@
       📸 Screenshot the card above to share on Instagram or TikTok!
     </div>
 
-    <!-- Scroll hint -->
     <div style="color:var(--muted);font-size:13px;margin-bottom:12px;" id="ui-scroll-hint">
       ↓ Scroll down to share your progress
     </div>
     <div style="font-size:24px;animation:bounce 2s infinite;color:var(--accent);">↓</div>
 
-    <!-- Share buttons at the natural bottom of the page -->
     <div style="margin-top:60px;padding-top:32px;border-top:1px solid var(--border);">
       <div style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;" id="ui-share-title">Share your progress 🚀</div>
       <div style="display:flex;gap:10px;margin-bottom:10px;">
@@ -791,7 +822,6 @@
       </div>
       <button class="share-btn share-btn-skip" style="width:100%;font-size:13px;margin-top:4px;" onclick="afterShare()" id="ui-skip-btn">Skip → Continue to next day</button>
     </div>
-
   </div>
 </div>
 
@@ -834,36 +864,88 @@
 // ===================== WORD LIST =====================
 const ALL_WORDS = `people person family friend home house city country world work job money time day year life place thing way woman man child boy girl mother father son daughter speak talk understand learn teach study read buy sell pay cost spend earn save watch listen answer stay travel happy sad angry afraid proud nervous tired sick beautiful strong smart kind funny serious friendly honest important different special difficult easy possible necessary quickly slowly carefully suddenly finally especially usually accident achieve action activity add address admit adult advantage advice agree allow amazing animal announce appear apply appreciate approach area argue army arrange arrive article artist aspect assist assume behavior belief benefit birth blame blood body born boss brain break breath build busy cancer capable capital capture care career cause celebrate challenge chance change character charge choice choose citizen civil claim class clean clear climb coffee collect college comfortable commit common community company compare complete complex concern connect consider contain continue control conversation correct create crime crisis culture current damage danger dangerous data dead deal death decision declare define demand describe design develop difference direct discover discuss disease display distance divide doctor dream drink drive drop drug economic education effect effort election emotion employee energy engine enjoy environment equal escape evidence experience explain express extend extreme failure faith famous fear fight film finance focus force foreign forget freedom fruit future generate global government growth guarantee guide health history holiday hospital hotel human humor idea identify imagine impact improve include increase independence individual influence information injury inspire instead intelligence interest invest involve issue journey judge justice knowledge language leader leadership legal lesson limit manage marriage memory message method military mind mission mistake modern moment moral mountain murder music nation natural nature negative negotiate network normal notice abandon absence absolute absorb abuse academic accomplish according account accurate accuse acid acknowledge Acquire activist adapt adequate adjustment administration admire adolescent adopt advance advertising advocate affair affect agricultural aircraft airline airport album alcohol alliance analyst analyze ancient anniversary anticipate anxiety appointment approval approximately architect argument arrest artistic assault assessment assignment association assumption battery battle bedroom belong beneath biological blade blanket bomb bond boot boundary boyfriend branch brand breakfast brilliant broken brush budget bullet bunch burden cabin cabinet cable campaign campus capacity captain carbon carrier cast category ceiling celebrity central century ceremony chain chairman chamber champion championship channel characteristic charity chart chase chef chemical chest cholesterol cigarette circle circumstance civilian classic climate clinic cluster coalition cognitive collapse collection collective colonial column combination comedy commander commercial commission commitment committee communicate competition competitive competitor complaint composition comprehensive concentrate concentration concept conclusion concrete conduct conference confidence conflict confusion congressional connection consciousness consensus consequence conservative considerable consideration consistent constitutional construction consultant consumer consumption container contemporary contest context controversial controversy convention conventional conviction convince cooperation corporate corporation correspondent coverage craft crash creation creature credit criminal criteria criticism criticize curriculum hypothesis identification implication initiative institutional intellectual interpretation intervention investigation legislation legitimate motivation obligation observation orientation participation perception phenomenon population presentation procedure psychological recommendation representation restriction sophisticated subsequent substantial transformation tremendous ultimately understanding almost alone along among amount though however therefore young month week hour believe remember abroad accept access accompany achievement act active actor actress actual actually addition additional Adjust administrator admission advanced adventure advise adviser afford afternoon age agency agenda agent aggressive agreement aid aide aim air alive ally alter alternative analysis anger angle annual anybody anymore anyone apartment apparent appeal appearance apple application appoint appropriate approve Arab arise arm armed arrangement arrival aside asleep assert assess asset assign assistance assistant associate assure bathroom beach bean bear beat beauty bed beer beginning behind bell below belt bench bend beside besides best bet better between beyond Bible bike bill bind bird birthday bit bite black blind block blow blue board boat bombing bone book boom border borrow bother bottle bottom bowl box bread breast breathe brick bridge brief briefly bright British broad brother brown buck building burn bury business butter button buyer cake calculate camera camp Canadian candidate cap capability card careful carry case cash catch Catholic celebration cell center certain certainly chair changing chapter characterize cheap check cheek cheese chicken chief childhood Chinese chip chocolate Christian Christmas church cite classroom clearly client clinical clock close closely closer clothes clothing cloud club clue coach coal coast coat code cold colleague color combine comfort command comment communication comparison compete complain completely complicated component compose computer concerned concert conclude condition confident confirm confront Congress consist constant constantly constitute construct consume contact content continued contract contrast contribute contribution convert cook cookie cooking cool cope copy core corn corner cotton couch council counselor count counter county couple courage course court cousin cover crack crazy cream creative crew critic critical crop cross crowd crucial cultural curious currently custom customer cut cycle daily dance dare dark darkness date dealer dear debate debt decade decide deck decline decrease deeply defeat defend defendant defense defensive deficit definitely definition degree delay deliver delivery democracy Democrat democratic demonstrate demonstration deny department depend dependent depending depict depression depth deputy derive description desert deserve designer desire desk desperate despite destroy destruction detail detailed detect determine developing development device devote dialogue diet differ differently difficulty digital dimension dining direction directly director dirt dirty disability disagree disappear disaster discipline discourse discovery discrimination discussion dish dismiss disorder dispute distant distinct distinction distinguish distribute distribution district diverse diversity division divorce document dog domestic dominant dominate door double doubt downtown dozen draft drag drama dramatic dramatically draw drawing dress driver dry due during dust duty eager earnings earth ease easily eastern eat economics economist economy edge edition editor educate educational educator effective effectively efficiency efficient elderly elect electric electricity electronic element elementary eliminate elite elsewhere email embrace emerge emergency emission emotional emphasis emphasize employ employer employment empty enable encounter encourage enemy enforcement engage engineer engineering enhance enormous ensure enter enterprise entertainment entire entirely entrance entry environmental episode equally equipment era error essay essential essentially establish establishment estate estimate ethics ethnic European evaluate evaluation evening eventually everybody everyday everyone everything everywhere evolution evolve exact examination examine exceed excellent except exception exchange exciting executive exercise exhibit exhibition exist existence existing expand expansion expect expectation expense expensive experiment explanation explode explore explosion expose exposure expression extension extensive extent external extraordinary extremely eye fabric face facility factor factory faculty fade fail fair fairly false familiar fantasy farm farmer fashion fat fate fault favor favorite feature federal fee feed fellow female fence fewer fiber fiction field fifth fighter fighting figure file fill financial finding fine finger finish firm fishing fitness flag flame flat flavor flee flesh flight float flow flower folk following football forest forever formal formation former formula forth fortune forward foundation founder frame framework freeze French frequency frequent frequently fresh friendship front frustration fuel fully function fund fundamental funding funeral furniture furthermore gain galaxy gallery gang gap garage garden garlic gas gate gather gay gaze gear gender gene generation genetic gentleman gently German gesture ghost giant gift gifted girlfriend glad glance glass glove goal golden golf governor grab grade gradually graduate grain grand grandfather grandmother grant grass grave gray greatest grocery ground grow growing guard guess guest guideline guilty gun guy habit habitat hair hall handful handle hang hardly hat hate head headline headquarters healthy hearing heart heat heaven heavily heel height helicopter hell helpful heritage hero hide highlight highly highway historian historic historical hit hole holy homeless honey honor horizon horror host household housing huge hungry hunter hunting hurt husband ice ideal identity ignore illegal illness illustrate imagination immediate immediately immigrant immigration implement imply impose impossible impress impression impressive improvement incentive incident income incorporate incredible independent indicate indication industrial infant infection inflation inform ingredient initial initially inner innocent inquiry insight insist install instance institution instruction instructor instrument insurance intense intensity intention interaction interested internal international interpret introduction invasion investigate investigator investment investor invite involvement Islamic island Israeli Italian item jacket jail Japanese jet Jewish join joint joke journal journalist joy judgment juice jump junior jury justify kick kid killer killing kiss kitchen knee knife knock label labor laboratory lack lady lake land landscape lap largely launch lawn lawsuit lawyer layer leading leaf league lean learning leather legacy legend lemon length liberal library license lifestyle lifetime lift literally literary literature living load loan locate location lock loose loss luck lucky lung mad magazine mainly maintain maintenance majority makeup mall management manner manufacturer manufacturing margin mark marketing married marry mask massive master match measurement meat mechanism media medication medicine medium membership mental mention merely mess metal meter middle minister minor minority miracle mirror missile mixture mode moderate modest mood moon moreover morning mortgage mostly motion motor mount multiple muscle museum musical musician Muslim mutual mystery myth naked narrative narrow national native naturally nearby necessarily negotiation neighborhood nerve nevertheless newly newspaper nomination nonetheless normally northern nuclear numerous nurse nut objective observe observer obtain obvious obviously occasionally occupation occupy occur ocean odd odds offense offensive officer official ongoing onion online opening operate operating operation operator opponent opportunity oppose opposite opposition ordinary organic original otherwise outcome overcome overlook owner package painful paint painter painting pale Palestinian palm panel paper parking participant participate particularly partly partnership passage passenger passion patch patient pause payment peak peer penalty perceive percentage perfectly perform performance permanent permission permit personal personality personally personnel perspective persuade phase philosophy photograph photographer phrase physically physician pilot pile pipe pitch planet planning platform pleasure plenty plot pocket poem poet poetry pole political politically politician politics poll pollution popular porch portrait portray pose positive possess possibility potentially pound poverty powder powerful practical pray prayer precisely predict preference pregnancy pregnant preparation prescription preserve presidential pressure pretend prevent primarily principal principle priority prisoner privacy probably proceed produce producer production profession professor profile profit program project prominent promote prompt proof properly property proportion proposal propose proposed prosecutor prospect protection protein protest prove provider province provision psychologist psychology publication publicly publisher punishment purchase purpose pursue qualify quarterback quiet quit quote racial radical rail raise rank rapidly rarely rating ratio react reaction reader reality reason reasonable recall recognition recommend recording recovery recruit reduce reduction refer reflect reflection reform refugee refuse regarding regardless regime regional register regulate regulation reinforce reject relation relatively relax release relevant relief religion religious rely remarkable remind remote repeatedly represent representative Republican reputation request researcher resemble reservation resist resistance resolution resolve resort respect respondent response responsibility restaurant restore retain retire retirement reveal revenue revolution rhythm rifle ring rise romantic roughly routine row rule running rural rush Russian sacred safety sake salad salary sanction satellite satisfaction satisfy sauce saving scandal scared scenario schedule scheme scholar scholarship scientific scientist scope scream script search season secret secretary sector secure seed seek segment seize selection self Senate senator senior sensitive separate sequence settle settlement severe sexual shade shadow sharp sheet shelf shell shelter shift shine shirt shock shoot shopping shortly shoulder shout shower shrug shut signal significance significantly silence silver similarly simply sin singer sink slice slide slightly slip smell smoke smooth snap soccer soil solar soldier solid somehow spirit spiritual split spokesman squeeze stability stable stair stake statement statistics steady steal steel stick stir stock stomach storage storm straight strange stranger strategic stream strengthen stretch strike string strip stroke strongly structure struggle studio stupid style submit substance succeed successfully sudden suffer sufficient suggest suggestion suicide summit super supporter suppose supposed surely surface surgery surround survival survive survivor suspect sustain swear sweep swim swing switch symbol symptom tablespoon tactic tale talent tap tape taxpayer teaching telescope television temperature temporary tendency terrorism terrorist testify testimony testing thick thin throat tooth topic toss totally tough tourist tournament toward towards tower toy trace tradition traffic tragedy trail transition translate transportation trend tribe tunnel typical typically ugly ultimate unable undergo unfortunately uniform unique universal universe unknown unless unlike unlikely unusual upper urban utility vacation valley variable variation vast venture versus vessel veteran via victim victory viewer violate violation virtually virtue vulnerable wander wealthy weapon weather wedding welfare widespread willing wisdom wound wrap writer zone ability able abortion Absolutely African American art Asian because before bus car cat cop cow cry cup dad deep deer die dig dinner ear early east egg else end English enough event ever exactly example expert extra fact fall fan far fast feeling final fire fish fit fix floor fly food foot form found fourth full fun game general generally given God gold green group half hand heavy hello hill hip hire hope horse hot ill image importance including increased increasing increasingly indeed index Indian industry inside intend interesting Internet interview into introduce involved Iraqi Irish iron Jew key kill king lab large late later Latin latter laugh law lay lead least leg less letter level lie light likely limitation limited line link lip list local lose lost lot lots loud lovely lover lower lunch machine mail main major maker male manager map market mass material math matter maybe mayor meal mean meaning meanwhile measure medical meet meeting member menu mere Mexican milk minute miss mix model mom monitor mouse mouth movement movie must name near nearly neck neighbor net never news nice night nobody nod noise none north nose note nothing notion novel nowhere number object occasion office often oil Olympic once only onto opinion option orange order organization organize origin originally others ought outside oven overall owe pace pack page pain pair pan pant parent park part particular partner party pass past path pattern peace pepper per perfect perhaps period pet phone photo physical piano pick picture pie piece pine pink plan plane plant plastic plate player please plus point police policy pool poor pop port portion position possibly post pot potato potential pour power practice prefer prepare presence present president press pretty previous previously price pride priest primary prime print prior prison private problem process product professional progress promise proper protect public publish pull pure push quality quarter question quick quietly quite race radio rain range rapid rare rate rather raw reach reading ready realize receive recent recently recipe recognize record recover red reference regard region regular regularly relate relationship relative remain remaining remove repeat replace reply report reporter require requirement research resident resource respond responsible rest result return review rice rich rid ride risk river road rock role roll roof room root rope rose rough round route rub safe sale sales salt sample sand scale scene school science score screen sea seat section security select send sense sentence series seriously serve service session setting several sex shake shape share ship shit shoe shooting shop shore shot side sigh sight sign significant silent similar simple since sing single sir sister site situation size ski skill skin sky slave sleep slight slow smile snow social society soft software solution solve somebody someone something sometimes somewhat somewhere song soon sorry sort soul sound soup source south southern Soviet space Spanish speaker specialist species specific specifically speech speed spending spin sport spot spread spring square staff stage standard standing star stare state station status step stone stop store story strategy street strength stress student stuff subject success successful sue sugar suit summer sun supply support Supreme sure surprise surprised surprising surprisingly survey sweet system table tail tall tank target task taste tax tea teacher team tear teaspoon technical technique technology teen teenager telephone tend tennis tension tent term terms terrible territory terror test text than thank thanks theater theme theory therapy thinking thought threat threaten throughout throw thus ticket tie tight tiny tip tire tissue title tobacco today toe together tomato tomorrow tone tongue tonight tool top total touch tour town track trade traditional train training transfer transform treat treatment treaty tree trial trick trip troop trouble truck true truly trust truth tube twelve twice twin type uncle union unit United university until upon urge used useful user usual valuable value variety various vary vegetable vehicle version video view village violence violent virus visible vision visit visitor visual vital voice volume volunteer vote voter wage wait wake wall war warm warn warning wash waste water wave weak wealth wear weekend weekly weigh weight welcome well west western wet whatever wheel whenever whereas while whisper white whole wide widely wife wild wind window wine wing winner winter wipe wire wise wish withdraw within without witness wonder wonderful wood wooden word worker working works workshop worried worry worth writing wrong yard yell yellow yes yesterday yield youth`.split(/\s+/).filter(w => w.length > 0);
 
-
-// ============================================================
-// PRE-GENERATED WORD DATA
-// ============================================================
-const WORD_DATA = {"people":{"pos":"noun","synonyms":["individuals","persons","human beings","citizens"],"sentences":["The <strong>people</strong> of this city voted for a new mayor last night.","Thousands of <strong>people</strong> gathered in the park to celebrate the holiday.","Some <strong>people</strong> prefer working from home rather than going to an office."],"phrases":["people skills","people-watching"],"word_pt":"pessoas","word_es":"personas","sentences_pt":["As pessoas desta cidade votaram em um novo prefeito ontem à noite.","Milhares de pessoas se reuniram no parque para celebrar o feriado.","Algumas pessoas preferem trabalhar em casa a ir a um escritório."],"sentences_es":["La gente de esta ciudad votó por un nuevo alcalde anoche.","Miles de personas se reunieron en el parque para celebrar el día festivo.","Algunas personas prefieren trabajar desde casa en lugar de ir a una oficina."]},"person":{"pos":"noun","synonyms":["individual","human being","soul","character"],"sentences":["She is the kind of <strong>person</strong> who always helps others without being asked.","The police are looking for the <strong>person</strong> responsible for the theft.","Every <strong>person</strong> deserves to be treated with respect and dignity."],"phrases":["in person","person of interest"],"word_pt":"pessoa","word_es":"persona","sentences_pt":["Ela é o tipo de pessoa que sempre ajuda os outros sem ser pedida.","A polícia está procurando a pessoa responsável pelo roubo.","Toda pessoa merece ser tratada com respeito e dignidade."],"sentences_es":["Ella es el tipo de persona que siempre ayuda a los demás sin que se lo pidan.","La policía busca a la persona responsable del robo.","Toda persona merece ser tratada con respeto y dignidad."]},"family":{"pos":"noun","synonyms":["relatives","household","kin","loved ones"],"sentences":["Her <strong>family</strong> moved from Brazil to Canada when she was just eight years old.","We have a <strong>family</strong> tradition of cooking together every Sunday afternoon.","He called his <strong>family</strong> every week to stay connected while working abroad."],"phrases":["family values","start a family"],"word_pt":"família","word_es":"familia","sentences_pt":["A família dela se mudou do Brasil para o Canadá quando ela tinha apenas oito anos.","Temos uma tradição familiar de cozinhar juntos toda tarde de domingo.","Ele ligava para sua família toda semana para manter contato enquanto trabalhava no exterior."],"sentences_es":["Su familia se mudó de Brasil a Canadá cuando ella tenía solo ocho años.","Tenemos la tradición familiar de cocinar juntos cada tarde del domingo.","Llamaba a su familia cada semana para mantenerse conectado mientras trabajaba en el extranjero."]},"friend":{"pos":"noun","synonyms":["companion","buddy","ally","confidant"],"sentences":["My best <strong>friend</strong> and I have known each other since primary school.","She made a true <strong>friend</strong> at her new job who supported her through tough times.","A good <strong>friend</strong> tells you the truth even when it is hard to hear."],"phrases":["make friends","childhood friend"],"word_pt":"amigo","word_es":"amigo","sentences_pt":["Meu melhor amigo e eu nos conhecemos desde a escola primária.","Ela fez um verdadeiro amigo no novo emprego que a apoiou nos momentos difíceis.","Um bom amigo te diz a verdade mesmo quando é difícil de ouvir."],"sentences_es":["Mi mejor amigo y yo nos conocemos desde la escuela primaria.","Hizo un verdadero amigo en su nuevo trabajo que la apoyó en los momentos difíciles.","Un buen amigo te dice la verdad aunque sea difícil de escuchar."]},"home":{"pos":"noun","synonyms":["residence","dwelling","household","abode"],"sentences":["After years of living abroad, she finally returned <strong>home</strong> to be with her family.","They transformed a small apartment into a warm and welcoming <strong>home</strong>.","There is no place like <strong>home</strong> — nothing compares to the comfort of familiar surroundings."],"phrases":["feel at home","home sweet home"],"word_pt":"lar","word_es":"hogar","sentences_pt":["Depois de anos morando no exterior, ela finalmente voltou para casa para ficar com a família.","Eles transformaram um pequeno apartamento em um lar caloroso e acolhedor.","Não há lugar como o lar — nada se compara ao conforto de um ambiente familiar."],"sentences_es":["Después de años viviendo en el extranjero, finalmente volvió a casa para estar con su familia.","Transformaron un pequeño apartamento en un hogar cálido y acogedor.","No hay lugar como el hogar — nada se compara a la comodidad de un entorno familiar."]},"city":{"pos":"noun","synonyms":["metropolis","urban area","municipality","town"],"sentences":["New York is one of the most exciting and diverse <strong>cities</strong> in the world.","The <strong>city</strong> built new parks and bike lanes to improve quality of life for residents.","She grew up in a quiet village but always dreamed of living in a bustling <strong>city</strong>."],"phrases":["city center","inner city"],"word_pt":"cidade","word_es":"ciudad","sentences_pt":["Nova York é uma das cidades mais emocionantes e diversas do mundo.","A cidade construiu novos parques e ciclovias para melhorar a qualidade de vida dos moradores.","Ela cresceu em uma aldeia tranquila, mas sempre sonhou em morar em uma cidade movimentada."],"sentences_es":["Nueva York es una de las ciudades más emocionantes y diversas del mundo.","La ciudad construyó nuevos parques y carriles bici para mejorar la calidad de vida de los residentes.","Creció en un pueblo tranquilo pero siempre soñó con vivir en una ciudad bulliciosa."]},"country":{"pos":"noun","synonyms":["nation","state","territory","homeland"],"sentences":["Brazil is the largest <strong>country</strong> in South America and the fifth largest in the world.","She was proud to represent her <strong>country</strong> at the international competition.","Moving to a new <strong>country</strong> can be challenging but also incredibly rewarding."],"phrases":["country of origin","developing country"],"word_pt":"país","word_es":"país","sentences_pt":["O Brasil é o maior país da América do Sul e o quinto maior do mundo.","Ela ficou orgulhosa de representar seu país na competição internacional.","Mudar para um novo país pode ser desafiador, mas também incrivelmente recompensador."],"sentences_es":["Brasil es el país más grande de América del Sur y el quinto más grande del mundo.","Estaba orgullosa de representar a su país en la competencia internacional.","Mudarse a un nuevo país puede ser desafiante pero también increíblemente gratificante."]},"work":{"pos":"noun/verb","synonyms":["labor","effort","employment","occupation"],"sentences":["She had to <strong>work</strong> two jobs to pay for her university tuition.","The team put in months of hard <strong>work</strong> to finish the project on time.","Finding a good <strong>work</strong>-life balance is one of the biggest challenges for modern professionals."],"phrases":["hard work","work in progress"],"word_pt":"trabalho","word_es":"trabajo","sentences_pt":["Ela teve que trabalhar em dois empregos para pagar a mensalidade da universidade.","A equipe se dedicou meses de trabalho duro para terminar o projeto no prazo.","Encontrar um bom equilíbrio entre trabalho e vida pessoal é um dos maiores desafios dos profissionais modernos."],"sentences_es":["Tuvo que trabajar en dos empleos para pagar la matrícula universitaria.","El equipo dedicó meses de trabajo duro para terminar el proyecto a tiempo.","Encontrar un buen equilibrio entre el trabajo y la vida personal es uno de los mayores desafíos de los profesionales modernos."]},"money":{"pos":"noun","synonyms":["currency","funds","finances","wealth"],"sentences":["She saved her <strong>money</strong> for two years before buying her first apartment.","Making <strong>money</strong> is important, but finding meaning in your work matters even more.","The charity raised over a million dollars in <strong>money</strong> to help families in need."],"phrases":["save money","money management"],"word_pt":"dinheiro","word_es":"dinero","sentences_pt":["Ela economizou dinheiro por dois anos antes de comprar seu primeiro apartamento.","Ganhar dinheiro é importante, mas encontrar significado no trabalho importa ainda mais.","A instituição arrecadou mais de um milhão de dólares para ajudar famílias necessitadas."],"sentences_es":["Ahorró dinero durante dos años antes de comprar su primer apartamento.","Ganar dinero es importante, pero encontrar significado en tu trabajo importa aún más.","La organización benéfica recaudó más de un millón de dólares para ayudar a familias necesitadas."]},"speak":{"pos":"verb","synonyms":["talk","communicate","express","articulate"],"sentences":["She learned to <strong>speak</strong> English fluently after just two years of dedicated practice.","He was nervous to <strong>speak</strong> in front of a large audience but did it with confidence.","Being able to <strong>speak</strong> more than one language opens enormous doors in your career."],"phrases":["speak up","speak your mind"],"word_pt":"falar","word_es":"hablar","sentences_pt":["Ela aprendeu a falar inglês fluentemente após apenas dois anos de prática dedicada.","Ele ficou nervoso para falar na frente de uma grande audiência, mas o fez com confiança.","Ser capaz de falar mais de um idioma abre portas enormes na sua carreira."],"sentences_es":["Aprendió a hablar inglés con fluidez después de solo dos años de práctica dedicada.","Estaba nervioso de hablar frente a un público numeroso pero lo hizo con confianza.","Poder hablar más de un idioma abre enormes puertas en tu carrera."]},"learn":{"pos":"verb","synonyms":["acquire","study","discover","master"],"sentences":["The best time to <strong>learn</strong> a new language is when you are motivated and consistent.","She used this app every day to <strong>learn</strong> three new English words.","Children <strong>learn</strong> languages naturally by listening and repeating what they hear."],"phrases":["learn by heart","learn the ropes"],"word_pt":"aprender","word_es":"aprender","sentences_pt":["O melhor momento para aprender um novo idioma é quando você está motivado e consistente.","Ela usava este aplicativo todos os dias para aprender três novas palavras em inglês.","As crianças aprendem idiomas naturalmente ouvindo e repetindo o que ouvem."],"sentences_es":["El mejor momento para aprender un nuevo idioma es cuando estás motivado y eres constante.","Usaba esta aplicación todos los días para aprender tres nuevas palabras en inglés.","Los niños aprenden idiomas de forma natural escuchando y repitiendo lo que oyen."]},"beautiful":{"pos":"adjective","synonyms":["stunning","gorgeous","magnificent","breathtaking"],"sentences":["The sunset over the ocean was absolutely <strong>beautiful</strong> — we stood in silence for minutes.","She wore a <strong>beautiful</strong> dress to the graduation ceremony that impressed everyone.","What makes a city truly <strong>beautiful</strong> is not its buildings but the kindness of its people."],"phrases":["beautiful inside and out","eye of the beholder"],"word_pt":"bonito / lindo","word_es":"hermoso / bello","sentences_pt":["O pôr do sol sobre o oceano era absolutamente lindo — ficamos em silêncio por minutos.","Ela usou um vestido lindo na cerimônia de formatura que impressionou a todos.","O que torna uma cidade verdadeiramente bonita não são seus prédios, mas a bondade de seu povo."],"sentences_es":["La puesta de sol sobre el océano era absolutamente hermosa — nos quedamos en silencio por minutos.","Usó un vestido hermoso en la ceremonia de graduación que impresionó a todos.","Lo que hace a una ciudad verdaderamente hermosa no son sus edificios sino la amabilidad de su gente."]},"important":{"pos":"adjective","synonyms":["crucial","significant","essential","vital"],"sentences":["It is <strong>important</strong> to practice English every day if you want to become fluent.","She made an <strong>important</strong> decision that changed the direction of her entire career.","Sleep is one of the most <strong>important</strong> factors for both physical and mental health."],"phrases":["most important","play an important role"],"word_pt":"importante","word_es":"importante","sentences_pt":["É importante praticar inglês todos os dias se você quer se tornar fluente.","Ela tomou uma decisão importante que mudou a direção de toda a sua carreira.","O sono é um dos fatores mais importantes para a saúde física e mental."],"sentences_es":["Es importante practicar inglés todos los días si quieres volverte fluente.","Tomó una decisión importante que cambió el rumbo de toda su carrera.","El sueño es uno de los factores más importantes para la salud física y mental."]},"achieve":{"pos":"verb","synonyms":["accomplish","attain","reach","succeed in"],"sentences":["She trained for three years to <strong>achieve</strong> her dream of running a marathon.","With dedication and effort, you can <strong>achieve</strong> almost anything you set your mind to.","The company managed to <strong>achieve</strong> record profits despite the economic challenges."],"phrases":["achieve a goal","achieve success"],"word_pt":"alcançar / conquistar","word_es":"lograr / alcanzar","sentences_pt":["Ela treinou por três anos para alcançar seu sonho de correr uma maratona.","Com dedicação e esforço, você pode conquistar quase tudo que se propuser.","A empresa conseguiu alcançar lucros recordes apesar dos desafios econômicos."],"sentences_es":["Entrenó durante tres años para lograr su sueño de correr un maratón.","Con dedicación y esfuerzo, puedes lograr casi cualquier cosa que te propongas.","La empresa logró alcanzar ganancias récord a pesar de los desafíos económicos."]},"challenge":{"pos":"noun","synonyms":["obstacle","difficulty","test","hurdle"],"sentences":["Learning a new language is a <strong>challenge</strong>, but the rewards are absolutely worth it.","She embraced every <strong>challenge</strong> in her career as an opportunity to grow stronger.","The biggest <strong>challenge</strong> facing the team was not technical — it was communication."],"phrases":["rise to the challenge","face a challenge"],"word_pt":"desafio","word_es":"desafío","sentences_pt":["Aprender um novo idioma é um desafio, mas as recompensas valem absolutamente a pena.","Ela abraçou cada desafio em sua carreira como uma oportunidade de crescer.","O maior desafio que a equipe enfrentou não era técnico — era a comunicação."],"sentences_es":["Aprender un nuevo idioma es un desafío, pero las recompensas absolutamente valen la pena.","Abrazó cada desafío en su carrera como una oportunidad para crecer.","El mayor desafío que enfrentó el equipo no era técnico — era la comunicación."]},"knowledge":{"pos":"noun","synonyms":["understanding","expertise","wisdom","awareness"],"sentences":["Reading widely is one of the best ways to expand your <strong>knowledge</strong> on any topic.","Her deep <strong>knowledge</strong> of finance made her one of the most valued consultants in the firm.","<strong>Knowledge</strong> is power — the more you learn, the more opportunities open up in life."],"phrases":["general knowledge","knowledge is power"],"word_pt":"conhecimento","word_es":"conocimiento","sentences_pt":["Ler amplamente é uma das melhores maneiras de expandir seu conhecimento sobre qualquer tema.","Seu profundo conhecimento de finanças a tornou uma das consultoras mais valorizadas da empresa.","Conhecimento é poder — quanto mais você aprende, mais oportunidades se abrem na vida."],"sentences_es":["Leer ampliamente es una de las mejores formas de ampliar tu conocimiento sobre cualquier tema.","Su profundo conocimiento de las finanzas la convirtió en una de las consultoras más valoradas de la empresa.","El conocimiento es poder — cuanto más aprendes, más oportunidades se abren en la vida."]},"opportunity":{"pos":"noun","synonyms":["chance","opening","prospect","occasion"],"sentences":["Living abroad gave her the <strong>opportunity</strong> to experience a completely different culture.","He never missed an <strong>opportunity</strong> to improve his English skills, even in small ways.","When a great <strong>opportunity</strong> comes along, you must be prepared to take it immediately."],"phrases":["take the opportunity","window of opportunity"],"word_pt":"oportunidade","word_es":"oportunidad","sentences_pt":["Morar no exterior lhe deu a oportunidade de experimentar uma cultura completamente diferente.","Ele nunca perdeu uma oportunidade de melhorar seu inglês, mesmo de pequenas formas.","Quando uma grande oportunidade surge, você deve estar preparado para aproveitá-la imediatamente."],"sentences_es":["Vivir en el extranjero le dio la oportunidad de experimentar una cultura completamente diferente.","Nunca perdía una oportunidad de mejorar su inglés, incluso de formas pequeñas.","Cuando llega una gran oportunidad, debes estar preparado para aprovecharla de inmediato."]},"confidence":{"pos":"noun","synonyms":["self-assurance","belief","certainty","boldness"],"sentences":["Speaking English every day helped her build the <strong>confidence</strong> she needed for job interviews.","His <strong>confidence</strong> on stage impressed the entire audience during his presentation.","True <strong>confidence</strong> comes not from being perfect but from knowing you can handle what comes."],"phrases":["gain confidence","self-confidence"],"word_pt":"confiança","word_es":"confianza","sentences_pt":["Falar inglês todos os dias ajudou-a a construir a confiança necessária para entrevistas de emprego.","Sua confiança no palco impressionou todo o público durante sua apresentação.","A verdadeira confiança não vem de ser perfeito, mas de saber que você pode lidar com o que vier."],"sentences_es":["Hablar inglés todos los días la ayudó a construir la confianza que necesitaba para las entrevistas.","Su confianza en el escenario impresionó a todo el público durante su presentación.","La verdadera confianza no viene de ser perfecto sino de saber que puedes manejar lo que venga."]},"decision":{"pos":"noun","synonyms":["choice","resolution","determination","conclusion"],"sentences":["Studying English abroad was the best <strong>decision</strong> she ever made for her career.","He took his time before making the <strong>decision</strong> — he wanted to be completely sure.","A difficult <strong>decision</strong> becomes easier when you focus on your long-term goals."],"phrases":["make a decision","final decision"],"word_pt":"decisão","word_es":"decisión","sentences_pt":["Estudar inglês no exterior foi a melhor decisão que ela já tomou para sua carreira.","Ele levou seu tempo antes de tomar a decisão — queria ter certeza absoluta.","Uma decisão difícil fica mais fácil quando você foca nos seus objetivos de longo prazo."],"sentences_es":["Estudiar inglés en el extranjero fue la mejor decisión que tomó para su carrera.","Se tomó su tiempo antes de tomar la decisión — quería estar completamente seguro.","Una decisión difícil se vuelve más fácil cuando te concentras en tus objetivos a largo plazo."]},"experience":{"pos":"noun","synonyms":["background","expertise","encounter","exposure"],"sentences":["Traveling to different countries was the most valuable <strong>experience</strong> of her life.","He got the job because his five years of <strong>experience</strong> made him stand out from other candidates.","Every mistake you make is a learning <strong>experience</strong> that makes you wiser in the future."],"phrases":["work experience","life experience"],"word_pt":"experiência","word_es":"experiencia","sentences_pt":["Viajar para diferentes países foi a experiência mais valiosa de sua vida.","Ele conseguiu o emprego porque seus cinco anos de experiência o destacaram dos outros candidatos.","Cada erro que você comete é uma experiência de aprendizado que te torna mais sábio no futuro."],"sentences_es":["Viajar a diferentes países fue la experiencia más valiosa de su vida.","Consiguió el trabajo porque sus cinco años de experiencia lo destacaron de los otros candidatos.","Cada error que cometes es una experiencia de aprendizaje que te hace más sabio en el futuro."]},"success":{"pos":"noun","synonyms":["achievement","triumph","accomplishment","victory"],"sentences":["Her <strong>success</strong> as an English teacher came from her genuine passion for helping students.","Behind every overnight <strong>success</strong> there are years of hard work and dedication.","True <strong>success</strong> is not about money — it is about living a life that feels meaningful."],"phrases":["key to success","path to success"],"word_pt":"sucesso","word_es":"éxito","sentences_pt":["Seu sucesso como professora de inglês veio de sua genuína paixão por ajudar os alunos.","Por trás de todo sucesso imediato, há anos de trabalho duro e dedicação.","O verdadeiro sucesso não é sobre dinheiro — é sobre viver uma vida que parece significativa."],"sentences_es":["Su éxito como profesora de inglés vino de su genuina pasión por ayudar a los estudiantes.","Detrás de cada éxito repentino hay años de trabajo duro y dedicación.","El verdadero éxito no se trata de dinero — se trata de vivir una vida que se siente significativa."]},"happiness":{"pos":"noun","synonyms":["joy","contentment","delight","well-being"],"sentences":["<strong>Happiness</strong> is not something you find — it is something you build through daily choices.","The children's laughter filled the room with pure <strong>happiness</strong> and warmth.","Research shows that strong relationships are the greatest source of lasting <strong>happiness</strong>."],"phrases":["pursuit of happiness","true happiness"],"word_pt":"felicidade","word_es":"felicidad","sentences_pt":["A felicidade não é algo que você encontra — é algo que você constrói através de escolhas diárias.","A risada das crianças encheu a sala de pura felicidade e calor.","Pesquisas mostram que relacionamentos fortes são a maior fonte de felicidade duradoura."],"sentences_es":["La felicidad no es algo que encuentras — es algo que construyes a través de elecciones diarias.","La risa de los niños llenó la habitación de pura felicidad y calidez.","Las investigaciones muestran que las relaciones sólidas son la mayor fuente de felicidad duradera."]},"health":{"pos":"noun","synonyms":["well-being","fitness","wellness","condition"],"sentences":["Taking care of your <strong>health</strong> should always be your number one priority in life.","She changed her diet and exercise routine to improve her overall <strong>health</strong>.","Mental <strong>health</strong> is just as important as physical <strong>health</strong> — never ignore your emotions."],"phrases":["good health","mental health"],"word_pt":"saúde","word_es":"salud","sentences_pt":["Cuidar da sua saúde deve sempre ser sua prioridade número um na vida.","Ela mudou sua dieta e rotina de exercícios para melhorar sua saúde geral.","A saúde mental é tão importante quanto a saúde física — nunca ignore suas emoções."],"sentences_es":["Cuidar tu salud siempre debe ser tu prioridad número uno en la vida.","Cambió su dieta y rutina de ejercicios para mejorar su salud en general.","La salud mental es tan importante como la salud física — nunca ignores tus emociones."]},"education":{"pos":"noun","synonyms":["learning","schooling","training","instruction"],"sentences":["A quality <strong>education</strong> is the most powerful tool for changing your life and future.","She invested heavily in her <strong>education</strong> and it paid off with an excellent career.","<strong>Education</strong> does not end in the classroom — we learn every single day through life."],"phrases":["higher education","quality education"],"word_pt":"educação","word_es":"educación","sentences_pt":["Uma educação de qualidade é a ferramenta mais poderosa para mudar sua vida e futuro.","Ela investiu muito em sua educação e isso resultou em uma excelente carreira.","A educação não termina na sala de aula — aprendemos todos os dias através da vida."],"sentences_es":["Una educación de calidad es la herramienta más poderosa para cambiar tu vida y futuro.","Invirtió mucho en su educación y eso se tradujo en una excelente carrera.","La educación no termina en el aula — aprendemos todos los días a través de la vida."]},"communication":{"pos":"noun","synonyms":["interaction","exchange","dialogue","contact"],"sentences":["Good <strong>communication</strong> is the foundation of every healthy relationship and partnership.","The project failed mainly because of poor <strong>communication</strong> between team members.","Learning English dramatically improves your <strong>communication</strong> skills in a global world."],"phrases":["open communication","effective communication"],"word_pt":"comunicação","word_es":"comunicación","sentences_pt":["Uma boa comunicação é a base de todo relacionamento saudável e parceria.","O projeto falhou principalmente por causa de uma comunicação deficiente entre os membros da equipe.","Aprender inglês melhora dramaticamente suas habilidades de comunicação em um mundo globalizado."],"sentences_es":["La buena comunicación es la base de toda relación y asociación saludable.","El proyecto fracasó principalmente por la mala comunicación entre los miembros del equipo.","Aprender inglés mejora dramáticamente tus habilidades de comunicación en un mundo globalizado."]},"motivation":{"pos":"noun","synonyms":["drive","inspiration","determination","ambition"],"sentences":["Her <strong>motivation</strong> to learn English came from wanting to travel the world freely.","When you lose <strong>motivation</strong>, remembering your original goal can bring it back quickly.","The teacher's encouragement gave students the <strong>motivation</strong> they needed to keep going."],"phrases":["inner motivation","stay motivated"],"word_pt":"motivação","word_es":"motivación","sentences_pt":["Sua motivação para aprender inglês veio do desejo de viajar pelo mundo livremente.","Quando você perde a motivação, lembrar do seu objetivo original pode trazê-la de volta rapidamente.","O encorajamento do professor deu aos alunos a motivação que precisavam para continuar."],"sentences_es":["Su motivación para aprender inglés vino del deseo de viajar por el mundo libremente.","Cuando pierdes la motivación, recordar tu objetivo original puede traerla de vuelta rápidamente.","El aliento del profesor dio a los estudiantes la motivación que necesitaban para seguir adelante."]},"progress":{"pos":"noun","synonyms":["advancement","improvement","development","growth"],"sentences":["She could see her <strong>progress</strong> every day as she completed new words in the app.","Making slow and steady <strong>progress</strong> is far better than giving up and starting over.","The company celebrated its <strong>progress</strong> after achieving all quarterly targets ahead of schedule."],"phrases":["make progress","track your progress"],"word_pt":"progresso","word_es":"progreso","sentences_pt":["Ela podia ver seu progresso todos os dias ao completar novas palavras no aplicativo.","Fazer progressos lentos e constantes é muito melhor do que desistir e começar de novo.","A empresa celebrou seu progresso após atingir todas as metas trimestrais antes do prazo."],"sentences_es":["Podía ver su progreso cada día al completar nuevas palabras en la aplicación.","Hacer progresos lentos y constantes es mucho mejor que rendirse y empezar de nuevo.","La empresa celebró su progreso tras alcanzar todos los objetivos trimestrales antes de lo previsto."]},"career":{"pos":"noun","synonyms":["profession","vocation","occupation","calling"],"sentences":["She built a successful <strong>career</strong> in finance by working hard and never stopping to learn.","English fluency opened up amazing international <strong>career</strong> opportunities she never expected.","Choosing the right <strong>career</strong> is one of the most important decisions you will ever make."],"phrases":["career path","career goals"],"word_pt":"carreira","word_es":"carrera","sentences_pt":["Ela construiu uma carreira de sucesso em finanças trabalhando duro e nunca parando de aprender.","A fluência em inglês abriu oportunidades de carreira internacionais que ela nunca esperava.","Escolher a carreira certa é uma das decisões mais importantes que você tomará na vida."],"sentences_es":["Construyó una exitosa carrera en finanzas trabajando duro y nunca dejando de aprender.","La fluidez en inglés le abrió increíbles oportunidades de carrera internacional que nunca esperaba.","Elegir la carrera correcta es una de las decisiones más importantes que tomarás en tu vida."]},"culture":{"pos":"noun","synonyms":["civilization","tradition","heritage","society"],"sentences":["Studying a language is the best way to deeply understand another <strong>culture</strong>.","Brazil has a rich and vibrant <strong>culture</strong> known worldwide for its music and warmth.","When you travel, always respect the local <strong>culture</strong> and try to learn from it."],"phrases":["cultural exchange","pop culture"],"word_pt":"cultura","word_es":"cultura","sentences_pt":["Estudar um idioma é a melhor maneira de entender profundamente outra cultura.","O Brasil tem uma cultura rica e vibrante conhecida mundialmente por sua música e calor humano.","Quando você viaja, sempre respeite a cultura local e tente aprender com ela."],"sentences_es":["Estudiar un idioma es la mejor manera de comprender profundamente otra cultura.","Brasil tiene una cultura rica y vibrante conocida mundialmente por su música y calidez.","Cuando viajas, siempre respeta la cultura local e intenta aprender de ella."]},"leadership":{"pos":"noun","synonyms":["guidance","management","direction","authority"],"sentences":["Her <strong>leadership</strong> skills made her the natural choice to lead the new project team.","Great <strong>leadership</strong> is not about giving orders — it is about inspiring others to act.","The company's success was a direct result of strong and visionary <strong>leadership</strong>."],"phrases":["leadership skills","natural leader"],"word_pt":"liderança","word_es":"liderazgo","sentences_pt":["Suas habilidades de liderança a tornaram a escolha natural para liderar a nova equipe de projeto.","Uma grande liderança não é sobre dar ordens — é sobre inspirar os outros a agir.","O sucesso da empresa foi resultado direto de uma liderança forte e visionária."],"sentences_es":["Sus habilidades de liderazgo la convirtieron en la elección natural para liderar el nuevo equipo.","El gran liderazgo no se trata de dar órdenes — se trata de inspirar a otros a actuar.","El éxito de la empresa fue resultado directo de un liderazgo fuerte y visionario."]},"responsibility":{"pos":"noun","synonyms":["duty","obligation","accountability","commitment"],"sentences":["Taking <strong>responsibility</strong> for your mistakes is one of the signs of true maturity.","Parents have a <strong>responsibility</strong> to create a safe and nurturing environment for their children.","With every new role at work comes greater <strong>responsibility</strong> and higher expectations."],"phrases":["take responsibility","sense of responsibility"],"word_pt":"responsabilidade","word_es":"responsabilidad","sentences_pt":["Assumir a responsabilidade por seus erros é um dos sinais de verdadeira maturidade.","Os pais têm a responsabilidade de criar um ambiente seguro e acolhedor para seus filhos.","Com cada novo cargo no trabalho vem maior responsabilidade e expectativas mais altas."],"sentences_es":["Asumir la responsabilidad de tus errores es una de las señales de verdadera madurez.","Los padres tienen la responsabilidad de crear un entorno seguro y acogedor para sus hijos.","Con cada nuevo rol en el trabajo llega mayor responsabilidad y expectativas más altas."]}};
+const WORD_DATA = {
+  "people":{"pos":"noun","synonyms":["individuals","persons","human beings","citizens"],"sentences":["The <strong>people</strong> of this city voted for a new mayor last night.","Thousands of <strong>people</strong> gathered in the park to celebrate the holiday.","Some <strong>people</strong> prefer working from home rather than going to an office."],"phrases":["people skills","people-watching"],"word_pt":"pessoas","word_es":"personas","sentences_pt":["As pessoas desta cidade votaram em um novo prefeito ontem à noite.","Milhares de pessoas se reuniram no parque para celebrar o feriado.","Algumas pessoas preferem trabalhar em casa a ir a um escritório."],"sentences_es":["La gente de esta ciudad votó por un nuevo alcalde anoche.","Miles de personas se reunieron en el parque para celebrar el día festivo.","Algunas personas prefieren trabajar desde casa en lugar de ir a una oficina."]},
+  "person":{"pos":"noun","synonyms":["individual","human being","soul","character"],"sentences":["She is the kind of <strong>person</strong> who always helps others without being asked.","The police are looking for the <strong>person</strong> responsible for the theft.","Every <strong>person</strong> deserves to be treated with respect and dignity."],"phrases":["in person","person of interest"],"word_pt":"pessoa","word_es":"persona","sentences_pt":["Ela é o tipo de pessoa que sempre ajuda os outros sem ser pedida.","A polícia está procurando a pessoa responsável pelo roubo.","Toda pessoa merece ser tratada com respeito e dignidade."],"sentences_es":["Ella es el tipo de persona que siempre ayuda a los demás sin que se lo pidan.","La policía busca a la persona responsable del robo.","Toda persona merece ser tratada con respeto y dignidad."]},
+  "family":{"pos":"noun","synonyms":["relatives","household","kin","loved ones"],"sentences":["Her <strong>family</strong> moved from Brazil to Canada when she was just eight years old.","We have a <strong>family</strong> tradition of cooking together every Sunday afternoon.","He called his <strong>family</strong> every week to stay connected while working abroad."],"phrases":["family values","start a family"],"word_pt":"família","word_es":"familia","sentences_pt":["A família dela se mudou do Brasil para o Canadá quando ela tinha apenas oito anos.","Temos uma tradição familiar de cozinhar juntos toda tarde de domingo.","Ele ligava para sua família toda semana para manter contato enquanto trabalhava no exterior."],"sentences_es":["Su familia se mudó de Brasil a Canadá cuando ella tenía solo ocho años.","Tenemos la tradición familiar de cocinar juntos cada tarde del domingo.","Llamaba a su familia cada semana para mantenerse conectado mientras trabajaba en el extranjero."]}
+};
 
 // ===================== STATE =====================
 const STATE_KEY = 'wordwise_state';
-function loadState() {
-  try {
-    const s = localStorage.getItem(STATE_KEY);
-    return s ? JSON.parse(s) : null;
-  } catch { return null; }
-}
-function saveState(s) {
-  try { localStorage.setItem(STATE_KEY, JSON.stringify(s)); } catch {}
-}
-function getInitialState() {
-  return { currentDay: 1, wordsCompleted: 0, testsPassed: [], needsTest: false, testDay: null };
-}
-
-let state = loadState() || getInitialState();
+let state = { currentDay: 1, wordsCompleted: 0, testsPassed: [], needsTest: false, testDay: null };
+let reviewMode = false;
+let reviewDay = null;
 let currentWordIndex = 0;
-let wordData = []; // AI-generated data for today's words
+let wordData = [];
 let testQuestions = [];
 let testAnswers = [];
 let testCurrentQ = 0;
-let currentLang = 'en'; // 'en', 'pt', 'es'
+let currentLang = 'en';
 
-// ===================== UI TRANSLATIONS =====================
+function loadState() {
+  try {
+    const s = localStorage.getItem(STATE_KEY);
+    if (s) state = JSON.parse(s);
+  } catch { }
+  if (!state.currentDay) state = { currentDay: 1, wordsCompleted: 0, testsPassed: [], needsTest: false, testDay: null };
+}
+
+function saveState() {
+  try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch { }
+}
+
+function buildCalendar() {
+  const maxDay = Math.min(Math.floor(ALL_WORDS.length / 3), state.currentDay + 5);
+  const completedDays = Math.floor(state.wordsCompleted / 3);
+  const grid = document.getElementById('calendar-grid');
+  if (!grid) return;
+  
+  grid.innerHTML = '';
+  for (let day = 1; day <= maxDay; day++) {
+    const isCompleted = day <= completedDays;
+    const isCurrent = day === state.currentDay;
+    const dayWords = ALL_WORDS.slice((day - 1) * 3, day * 3);
+    
+    const dayCard = document.createElement('div');
+    dayCard.className = 'day-card';
+    if (isCompleted) dayCard.classList.add('completed');
+    if (isCurrent) dayCard.classList.add('current');
+    
+    dayCard.innerHTML = `
+      <div class="day-number">Day ${day}</div>
+      <div class="day-words">${dayWords[0]}, ${dayWords[1]}, ${dayWords[2]}</div>
+      <div class="day-status ${isCompleted ? 'completed' : 'locked'}">${isCompleted ? '✓ Completed' : '🔒 Locked'}</div>
+    `;
+    
+    if (isCompleted) {
+      dayCard.onclick = () => reviewDayWords(day);
+    }
+    grid.appendChild(dayCard);
+  }
+}
+
+function reviewDayWords(day) {
+  reviewMode = true;
+  reviewDay = day;
+  currentWordIndex = 0;
+  wordData = [];
+  
+  const startWord = (day - 1) * 3;
+  const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
+  
+  showScreen('practice');
+  document.getElementById('practice-day-badge').innerHTML = `📖 Day ${day} (Review) <span style="font-size:10px;background:var(--accent2);padding:2px 8px;border-radius:20px;">Review Mode</span>`;
+  document.getElementById('complete-day-btn').style.display = 'none';
+  
+  buildWordNav(todaysWords.length);
+  
+  const data = fetchWordData(todaysWords[0]);
+  wordData[0] = data;
+  renderWord(data, todaysWords[0], 0);
+  updateWordNav(0);
+  updateNavButtons(0, todaysWords.length);
+}
+
 const UI_TEXT = {
   en: {
     tagline: "Master 3000 essential English words and kickstart your English language journey — 3 words a day.",
@@ -875,7 +957,7 @@ const UI_TEXT = {
     screenshotHint: "📸 Screenshot the card above to share on Instagram or TikTok!",
     scrollHint: "↓ Scroll down to share your progress",
     shareTitle: "Share your progress 🚀", copyBtn: "📋 Copy Caption",
-    skipBtn: "Skip → Continue to next day",
+    skipBtn: "Skip → Continue to next day", reviewTitle: "Review Past Days",
     synonymsLabel: "Synonyms", sentencesLabel: "Example Sentences",
     phrasesLabel: "Common Phrases", pronTitle: "🎤 Pronunciation Practice",
     hearWord: "🔊 Hear the word", micHint: "Tap to practice your pronunciation",
@@ -891,7 +973,7 @@ const UI_TEXT = {
     screenshotHint: "📸 Tire um print do cartão acima para compartilhar no Instagram ou TikTok!",
     scrollHint: "↓ Role para baixo para compartilhar seu progresso",
     shareTitle: "Compartilhe seu progresso 🚀", copyBtn: "📋 Copiar Legenda",
-    skipBtn: "Pular → Continuar para o próximo dia",
+    skipBtn: "Pular → Continuar para o próximo dia", reviewTitle: "Revisar Dias Anteriores",
     synonymsLabel: "Sinônimos", sentencesLabel: "Frases de Exemplo",
     phrasesLabel: "Expressões Comuns", pronTitle: "🎤 Prática de Pronúncia",
     hearWord: "🔊 Ouvir a palavra", micHint: "Toque para praticar sua pronúncia",
@@ -907,7 +989,7 @@ const UI_TEXT = {
     screenshotHint: "📸 Captura la tarjeta de arriba para compartir en Instagram o TikTok!",
     scrollHint: "↓ Desplázate hacia abajo para compartir tu progreso",
     shareTitle: "Comparte tu progreso 🚀", copyBtn: "📋 Copiar Leyenda",
-    skipBtn: "Omitir → Continuar al siguiente día",
+    skipBtn: "Omitir → Continuar al siguiente día", reviewTitle: "Revisar Días Anteriores",
     synonymsLabel: "Sinónimos", sentencesLabel: "Oraciones de Ejemplo",
     phrasesLabel: "Frases Comunes", pronTitle: "🎤 Práctica de Pronunciación",
     hearWord: "🔊 Escuchar la palabra", micHint: "Toca para practicar tu pronunciación",
@@ -918,8 +1000,6 @@ const UI_TEXT = {
 function applyUITranslation(lang) {
   const t = UI_TEXT[lang];
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  const setHTML = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
-
   set('ui-tagline', t.tagline);
   set('ui-total-words', t.totalWords);
   set('ui-current-day', t.currentDay);
@@ -940,17 +1020,9 @@ function applyUITranslation(lang) {
   set('ui-share-title', t.shareTitle);
   set('ui-copy-btn', t.copyBtn);
   set('ui-skip-btn', t.skipBtn);
-
-  // Update pronunciation section if visible
-  const pronTitle = document.querySelector('.pronunciation-title');
-  if (pronTitle) pronTitle.textContent = t.pronTitle;
-  const micFeedback = document.getElementById('pron-feedback');
-  if (micFeedback && micFeedback.textContent === UI_TEXT['en'].micFeedback || micFeedback?.textContent === UI_TEXT['pt'].micFeedback || micFeedback?.textContent === UI_TEXT['es'].micFeedback) {
-    micFeedback.textContent = t.micFeedback;
-  }
+  set('ui-review-title', t.reviewTitle);
 }
 
-// ===================== LANGUAGE =====================
 function setLang(lang, btn) {
   currentLang = lang;
   ['en','pt','es'].forEach(l => {
@@ -960,16 +1032,14 @@ function setLang(lang, btn) {
     if (p) p.classList.toggle('active', l === lang);
   });
   applyUITranslation(lang);
-  // Re-render current word if on practice screen
-  const dayIdx = state.currentDay - 1;
-  const startWord = dayIdx * 3;
-  const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
-  if (wordData[currentWordIndex] && document.getElementById('practice').classList.contains('active')) {
+  if (document.getElementById('practice').classList.contains('active') && wordData[currentWordIndex]) {
+    const dayIdx = reviewMode ? reviewDay - 1 : state.currentDay - 1;
+    const startWord = dayIdx * 3;
+    const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
     renderWord(wordData[currentWordIndex], todaysWords[currentWordIndex], currentWordIndex);
   }
 }
 
-// ===================== HOME =====================
 function updateHome() {
   const wordsLearned = (state.currentDay - 1) * 3;
   document.getElementById('home-day-num').textContent = state.currentDay;
@@ -977,19 +1047,23 @@ function updateHome() {
   const pct = Math.round((wordsLearned / ALL_WORDS.length) * 100);
   document.getElementById('home-pct').textContent = pct + '%';
   document.getElementById('home-progress-bar').style.width = pct + '%';
+  buildCalendar();
 }
 
 function goHome() {
+  reviewMode = false;
+  reviewDay = null;
   showScreen('home');
   updateHome();
 }
 
-// ===================== PRACTICE =====================
 function startPractice() {
   if (state.needsTest) {
     startTest();
     return;
   }
+  reviewMode = false;
+  reviewDay = null;
   currentWordIndex = 0;
   wordData = [];
   const dayIdx = state.currentDay - 1;
@@ -997,23 +1071,16 @@ function startPractice() {
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
 
   showScreen('practice');
-  document.getElementById('practice-day-badge').textContent = 'Day ' + state.currentDay;
+  document.getElementById('practice-day-badge').innerHTML = `Day ${state.currentDay}`;
+  document.getElementById('complete-day-btn').style.display = 'none';
+  
   buildWordNav(todaysWords.length);
-
-  // Load and render first word immediately
+  
   const data = fetchWordData(todaysWords[0]);
   wordData[0] = data;
   renderWord(data, todaysWords[0], 0);
   updateWordNav(0);
   updateNavButtons(0, todaysWords.length);
-
-  // Smooth scroll to word content after short delay
-  setTimeout(() => {
-    const wordContent = document.getElementById('word-content');
-    if (wordContent) {
-      wordContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, 300);
 }
 
 function buildWordNav(count) {
@@ -1040,7 +1107,7 @@ function updateWordNav(active) {
 
 function jumpToWord(i) {
   currentWordIndex = i;
-  const dayIdx = state.currentDay - 1;
+  const dayIdx = reviewMode ? reviewDay - 1 : state.currentDay - 1;
   const startWord = dayIdx * 3;
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
   updateWordNav(i);
@@ -1055,11 +1122,12 @@ function jumpToWord(i) {
 function updateNavButtons(idx, total) {
   document.getElementById('prev-btn').style.display = idx > 0 ? 'inline-flex' : 'none';
   document.getElementById('next-btn').style.display = idx < total - 1 ? 'inline-flex' : 'none';
-  document.getElementById('complete-day-btn').style.display = idx === total - 1 && wordData[idx] ? 'inline-flex' : 'none';
+  if (!reviewMode && idx === total - 1 && wordData[idx]) {
+    document.getElementById('complete-day-btn').style.display = 'inline-flex';
+  }
 }
 
 function loadWordData(wordsArr, idx) {
-  
   const data = fetchWordData(wordsArr[idx]);
   wordData[idx] = data;
   renderWord(data, wordsArr[idx], idx);
@@ -1160,9 +1228,8 @@ function renderWord(data, word, idx) {
   document.getElementById('word-content').innerHTML = html;
 }
 
-// ===================== NAVIGATION =====================
 function nextWord() {
-  const dayIdx = state.currentDay - 1;
+  const dayIdx = reviewMode ? reviewDay - 1 : state.currentDay - 1;
   const startWord = dayIdx * 3;
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
   currentWordIndex++;
@@ -1176,7 +1243,7 @@ function nextWord() {
 }
 
 function prevWord() {
-  const dayIdx = state.currentDay - 1;
+  const dayIdx = reviewMode ? reviewDay - 1 : state.currentDay - 1;
   const startWord = dayIdx * 3;
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
   currentWordIndex--;
@@ -1192,18 +1259,15 @@ function prevWord() {
 function completeDay() {
   const completedDay = state.currentDay;
   state.wordsCompleted = state.currentDay * 3;
-
-  // Show share screen first
   showShareScreen(completedDay);
-
-  // Advance state (will be applied after share)
+  
   if (state.currentDay % 10 === 0) {
     state.needsTest = true;
     state.testDay = state.currentDay;
   } else {
     state.currentDay++;
   }
-  saveState(state);
+  saveState();
 }
 
 function showShareScreen(completedDay) {
@@ -1234,14 +1298,8 @@ function copyShareText() {
   const text = getShareText();
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('.share-btn-copy');
-    btn.textContent = '✅ Copied! Now paste it in your post';
-    btn.style.borderColor = 'var(--green)';
-    btn.style.color = 'var(--green)';
-    setTimeout(() => {
-      btn.textContent = '📋 Copy Caption & Link';
-      btn.style.borderColor = '';
-      btn.style.color = '';
-    }, 3000);
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy Caption', 3000);
   });
 }
 
@@ -1251,27 +1309,17 @@ function openWhatsApp() {
 }
 
 function shareInstagram() {
-  // Instagram doesn't support direct web sharing — guide user to screenshot + post
   copyShareText();
   const btn = document.querySelector('.share-btn-ig');
-  btn.textContent = '✅ Caption copied! Now screenshot the card above & post it on Instagram';
-  btn.style.background = 'var(--green)';
-  setTimeout(() => {
-    btn.textContent = '📸 Share on Instagram';
-    btn.style.background = '';
-  }, 4000);
+  btn.textContent = '✅ Caption copied! Screenshot & post!';
+  setTimeout(() => btn.textContent = '📸 Instagram', 4000);
 }
 
 function shareTikTok() {
-  // TikTok doesn't support direct web sharing — guide user to screenshot + post
   copyShareText();
   const btn = document.querySelector('.share-btn-tt');
-  btn.textContent = '✅ Caption copied! Screenshot the card above & post it on TikTok';
-  btn.style.background = 'var(--green)';
-  setTimeout(() => {
-    btn.textContent = '🎵 Share on TikTok';
-    btn.style.background = '';
-  }, 4000);
+  btn.textContent = '✅ Caption copied! Screenshot & post!';
+  setTimeout(() => btn.textContent = '🎵 TikTok', 4000);
 }
 
 function afterShare() {
@@ -1282,7 +1330,6 @@ function afterShare() {
   }
 }
 
-// ===================== SPEECH =====================
 function speakText(text, rate = 1) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
@@ -1297,13 +1344,10 @@ let isListening = false;
 
 function toggleMic(targetWord) {
   if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-    document.getElementById('pron-feedback').textContent = 'Speech recognition not supported in this browser. Try Chrome!';
+    document.getElementById('pron-feedback').textContent = 'Speech recognition not supported. Try Chrome!';
     return;
   }
-  if (isListening) {
-    recognition && recognition.stop();
-    return;
-  }
+  if (isListening) { recognition && recognition.stop(); return; }
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SpeechRecognition();
   recognition.lang = 'en-US';
@@ -1317,7 +1361,6 @@ function toggleMic(targetWord) {
     isListening = true;
     btn.classList.add('listening');
     fb.textContent = 'Listening... say the word!';
-    fb.className = 'pronunciation-feedback';
   };
 
   recognition.onresult = (e) => {
@@ -1325,12 +1368,11 @@ function toggleMic(targetWord) {
     const target = targetWord.toLowerCase();
     isListening = false;
     btn.classList.remove('listening');
-
     if (said === target || said.includes(target) || target.includes(said)) {
       fb.textContent = '✅ Great pronunciation! "' + said + '"';
       fb.className = 'pronunciation-feedback good';
     } else {
-      fb.textContent = '🔄 You said "' + said + '" — try again! Listen first, then repeat.';
+      fb.textContent = '🔄 You said "' + said + '" — try again!';
       fb.className = 'pronunciation-feedback try-again';
     }
   };
@@ -1339,7 +1381,6 @@ function toggleMic(targetWord) {
     isListening = false;
     btn.classList.remove('listening');
     fb.textContent = 'Could not hear you. Try again!';
-    fb.className = 'pronunciation-feedback';
   };
 
   recognition.onend = () => {
@@ -1350,7 +1391,6 @@ function toggleMic(targetWord) {
   recognition.start();
 }
 
-// ===================== TEST =====================
 function startTest() {
   showScreen('test');
   const testDay = state.testDay || state.currentDay;
@@ -1359,11 +1399,7 @@ function startTest() {
   const reviewWords = ALL_WORDS.slice(Math.max(0, startBlock), endBlock);
   document.getElementById('test-subtitle').textContent = `Days ${testDay - 9}–${testDay} · 10 Questions`;
 
-  document.getElementById('test-content').innerHTML = `
-    <div class="loading-card">
-      <div class="spinner"></div>
-      <div style="color:var(--muted)">Generating your test questions...</div>
-    </div>`;
+  document.getElementById('test-content').innerHTML = `<div class="loading-card"><div class="spinner"></div><div>Generating questions...</div></div>`;
 
   testQuestions = fetchTestQuestions(reviewWords);
   testAnswers = [];
@@ -1378,7 +1414,7 @@ function fetchTestQuestions(words) {
     const type = Math.floor(Math.random() * 3);
     if (type === 0) {
       const correct = data.synonyms[0];
-      const others = ["happy","quickly","large","run","beautiful","sad","slowly","small","powerful","simple"].filter(w => w !== correct).slice(0,3);
+      const others = ["happy","quickly","large","run","beautiful","sad","slowly","small"].filter(w => w !== correct).slice(0,3);
       const options = [...others, correct].sort(() => Math.random() - 0.5);
       return { question: `Which word is a synonym for "${word}"?`, options, answer: correct };
     } else if (type === 1) {
@@ -1441,7 +1477,7 @@ function selectAnswer(btn, selected, correct) {
 function finishTest() {
   const score = testAnswers.filter(Boolean).length;
   const total = testAnswers.length;
-  const passed = score >= Math.ceil(total * 0.7); // 70% to pass
+  const passed = score >= Math.ceil(total * 0.7);
 
   document.getElementById('test-progress-fill').style.width = '100%';
   showScreen('result');
@@ -1453,12 +1489,13 @@ function finishTest() {
     document.getElementById('result-title').textContent = score === total ? 'Perfect Score!' : 'You Passed!';
     document.getElementById('result-message').textContent = `Excellent work! You've completed the review for days ${state.testDay - 9}–${state.testDay}. Keep up the great progress!`;
     document.getElementById('retry-btn').style.display = 'none';
+    document.getElementById('continue-btn').style.display = 'inline-flex';
     document.getElementById('continue-btn').textContent = 'Continue to Day ' + (state.testDay + 1) + ' →';
 
     state.testsPassed.push(state.testDay);
     state.needsTest = false;
     state.currentDay = state.testDay + 1;
-    saveState(state);
+    saveState();
   } else {
     document.getElementById('result-emoji').textContent = '💪';
     document.getElementById('result-title').textContent = 'Almost There!';
@@ -1472,15 +1509,15 @@ function retryTest() {
   startTest();
 }
 
-// ===================== SCREEN HELPER =====================
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
 }
 
-// ===================== INIT =====================
+loadState();
 updateHome();
+applyUITranslation('en');
 </script>
 </body>
 </html>
