@@ -678,9 +678,15 @@
     margin-bottom: 12px;
   }
   
-  /* Scroll to element helper class */
   .scroll-target {
     scroll-margin-top: 80px;
+  }
+  
+  /* Voice selection indicator */
+  .voice-quality {
+    font-size: 11px;
+    color: var(--green);
+    margin-left: 8px;
   }
 </style>
 </head>
@@ -881,7 +887,87 @@ let testQuestions = [];
 let testAnswers = [];
 let testCurrentQ = 0;
 let currentLang = 'en';
+let currentVoice = null;
 
+// ===================== VOICE SETUP =====================
+function initVoices() {
+  return new Promise((resolve) => {
+    if (window.speechSynthesis.getVoices().length) {
+      selectBestVoice();
+      resolve();
+    } else {
+      window.speechSynthesis.onvoiceschanged = () => {
+        selectBestVoice();
+        resolve();
+      };
+    }
+  });
+}
+
+function selectBestVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  // Try to find the best natural-sounding voice
+  const preferredVoices = [
+    'Google UK English Female',
+    'Google US English Female',
+    'Samantha',
+    'Google UK English Male',
+    'Google US English Male',
+    'Microsoft David Desktop',
+    'Microsoft Zira Desktop',
+    'en-US',
+    'en-GB'
+  ];
+  
+  for (const preferred of preferredVoices) {
+    const voice = voices.find(v => v.name.includes(preferred) || v.lang.includes(preferred));
+    if (voice) {
+      currentVoice = voice;
+      console.log("Selected voice:", voice.name);
+      return;
+    }
+  }
+  
+  // Fallback to any English voice
+  currentVoice = voices.find(v => v.lang.startsWith('en'));
+  if (currentVoice) {
+    console.log("Fallback voice:", currentVoice.name);
+  }
+}
+
+function speakText(text, rate = 0.9) {
+  if (!window.speechSynthesis) {
+    console.warn("Speech synthesis not supported");
+    return;
+  }
+  
+  // Cancel any ongoing speech
+  window.speechSynthesis.cancel();
+  
+  const utterance = new SpeechSynthesisUtterance(text);
+  
+  // Set voice if available
+  if (currentVoice) {
+    utterance.voice = currentVoice;
+  }
+  
+  // Optimize for natural sounding speech
+  utterance.lang = 'en-US';
+  utterance.rate = rate;
+  utterance.pitch = 1.0;
+  utterance.volume = 1;
+  
+  // Add small pause between sentences for better flow
+  if (text.includes('.') || text.includes('!') || text.includes('?')) {
+    utterance.rate = 0.85; // Slower for sentences
+  } else {
+    utterance.rate = 0.8; // Slower for individual words for clarity
+  }
+  
+  window.speechSynthesis.speak(utterance);
+}
+
+// ===================== STATE MANAGEMENT =====================
 function loadState() {
   try {
     const s = localStorage.getItem(STATE_KEY);
@@ -938,13 +1024,11 @@ function scrollToWords() {
     const wordContent = document.getElementById('word-content');
     if (wordContent) {
       wordContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      console.log("Scrolled to words");
     }
   }, 300);
 }
 
 function reviewDayWords(day) {
-  console.log("Reviewing day:", day);
   reviewMode = true;
   reviewDay = day;
   currentWordIndex = 0;
@@ -964,8 +1048,6 @@ function reviewDayWords(day) {
   renderWord(data, todaysWords[0], 0);
   updateWordNav(0);
   updateNavButtons(0, todaysWords.length);
-  
-  // Auto scroll to words
   scrollToWords();
 }
 
@@ -1084,46 +1166,31 @@ function goHome() {
 }
 
 function startPractice() {
-  console.log("Start practice called");
-  
-  // Check if there's a pending test first
   if (state.needsTest && state.testDay) {
     startTest();
     return;
   }
   
-  // Reset review mode
   reviewMode = false;
   reviewDay = null;
   currentWordIndex = 0;
   wordData = [];
   
-  // Get today's words
   const dayIdx = state.currentDay - 1;
   const startWord = dayIdx * 3;
   const todaysWords = ALL_WORDS.slice(startWord, startWord + 3);
   
-  console.log("Today's words:", todaysWords);
-  console.log("Current day:", state.currentDay);
-  
-  // Show practice screen
   showScreen('practice');
-  
-  // Update the day badge
   document.getElementById('practice-day-badge').innerHTML = `Day ${state.currentDay}`;
   document.getElementById('complete-day-btn').style.display = 'none';
   
-  // Build navigation dots
   buildWordNav(todaysWords.length);
   
-  // Load and render first word
   const data = fetchWordData(todaysWords[0]);
   wordData[0] = data;
   renderWord(data, todaysWords[0], 0);
   updateWordNav(0);
   updateNavButtons(0, todaysWords.length);
-  
-  // Auto scroll to words
   scrollToWords();
 }
 
@@ -1161,7 +1228,6 @@ function jumpToWord(i) {
   } else {
     loadWordData(todaysWords, i);
   }
-  // Scroll to words when jumping
   scrollToWords();
 }
 
@@ -1244,7 +1310,7 @@ function renderWord(data, word, idx) {
       ${(data.phrases || []).map(p => `
         <div class="phrase-row">
           <div class="phrase-text">${p}</div>
-          <button class="phrase-play" onclick="speakText('${p.replace(/'/g,"\\'")}')">🔊 Listen</button>
+          <button class="phrase-play" onclick="speakText('${p.replace(/'/g,"\\'")}', 0.85)">🔊 Listen</button>
         </div>`).join('')}
     </div>
 
@@ -1263,7 +1329,7 @@ function renderWord(data, word, idx) {
         ${(data.sentences || []).slice(0,2).map((s,i) => `
           <div class="phrase-row">
             <div class="phrase-text" style="font-size:13px">${s.replace(/<\/?strong>/g,'')}</div>
-            <button class="phrase-play" onclick="speakText(\`${s.replace(/<\/?strong>/g,'').replace(/`/g,"'")}\`)">🔊</button>
+            <button class="phrase-play" onclick="speakText(\`${s.replace(/<\/?strong>/g,'').replace(/`/g,"'")}\`, 0.85)">🔊</button>
           </div>
           ${showTranslation && sentenceTranslations[i] ? `
           <div class="translation-box" style="margin-bottom:8px">
@@ -1382,15 +1448,6 @@ function afterShare() {
   } else {
     goHome();
   }
-}
-
-function speakText(text, rate = 1) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'en-US';
-  utt.rate = rate;
-  window.speechSynthesis.speak(utt);
 }
 
 let recognition = null;
@@ -1573,6 +1630,7 @@ function showScreen(id) {
 loadState();
 updateHome();
 applyUITranslation('en');
+initVoices();
 </script>
 </body>
 </html>
